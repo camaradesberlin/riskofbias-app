@@ -5,6 +5,8 @@ library(tidyverse)
 library(shinydashboard)
 library(shinyjs)
 library(shinysurveys)
+library(data.table)
+library(robvis)
 # library(semantic.dashboard)
 
 
@@ -82,13 +84,13 @@ sequence_allocation <- tibble(
     each = 2),
   option = rep(c("Yes","No"), length(question)/2),
   input_type = rep("y/n", length(question)),
-  input_id = rep(c("same_cohorts_tool","report_randomalloc_tool",
-                   "describe_randomseqgen_tool","approp_random_alloc_tool"), each = 2),
+  input_id = rep(c("same_model_tool","report_random_allocation_tool",
+                   "describe_random_component_tool","appropriate_randomization_tool"), each = 2),
   required = TRUE,
   page = 2) %>%
   # mutate(input_id = gsub('\\b(\\pL)\\pL{3,}|.','\\U\\1', question, perl = TRUE)) %>%
-  mutate(dependence = rep(c(NA, "same_cohorts_tool", "report_randomalloc_tool", 
-                            "describe_randomseqgen_tool"), each = 2)) %>%
+  mutate(dependence = rep(c(NA, "same_model_tool", "report_random_allocation_tool", 
+                            "describe_random_component_tool"), each = 2)) %>%
   mutate(dependence_value = rep(c(NA, "Yes","Yes","Yes"), each = 2))
 
 
@@ -100,11 +102,11 @@ baseline_characteristics <- tibble(
     each = 2),
   option = rep(c("Yes","No"), length(question)/2),
   input_type = rep("y/n", length(question)),
-  input_id = rep(c("report_basechars_tool","similar_basechars_tool","adjust_confound_tool"), each = 2),
+  input_id = rep(c("report_base_chars_tool","similar_base_chars_tool","adjust_confound_tool"), each = 2),
   required = TRUE,
   page = 3) %>%
   # mutate(input_id = gsub('\\b(\\pL)\\pL{3,}|.','\\U\\1', question, perl = TRUE)) %>%
-  mutate(dependence = rep(c(NA, "report_basechars_tool", "similar_basechars_tool"), each = 2)) %>%
+  mutate(dependence = rep(c(NA, "report_base_chars_tool", "similar_base_chars_tool"), each = 2)) %>%
   mutate(dependence_value = rep(c(NA, "Yes","No"), each = 2))
 
 allocation_concealment <- tibble(
@@ -115,11 +117,11 @@ allocation_concealment <- tibble(
     each = 2),
   option = rep(c("Yes","No"), length(question)/2),
   input_type = rep("y/n", length(question)),
-  input_id = rep(c("randomization_described_tool","seqgen_blind_tool","alloc_conceal_appropriate_tool"), each = 2),
+  input_id = rep(c("describe_allocation_tool","seqgen_blind_tool","appropriate_conceal_tool"), each = 2),
   required = TRUE,
   page = 4) %>%
   # mutate(input_id = gsub('\\b(\\pL)\\pL{3,}|.','\\U\\1', question, perl = TRUE)) %>%
-  mutate(dependence = rep(c(NA, "randomization_described_tool", "seqgen_blind_tool"), each = 2)) %>%
+  mutate(dependence = rep(c(NA, "describe_allocation_tool", "seqgen_blind_tool"), each = 2)) %>%
   mutate(dependence_value = rep(c(NA, "Yes","No"), each = 2))
 
 random_housing <- tibble(
@@ -129,10 +131,10 @@ random_housing <- tibble(
     each = 2),
   option = rep(c("Yes","No"), length(question)/2),
   input_type = rep("y/n", length(question)),
-  input_id = rep(c("housing_described_tool","cages_random_tool"), each = 2),
+  input_id = rep(c("describe_housing_tool","cages_random_tool"), each = 2),
   required = TRUE,
   page = 5) %>%
-  mutate(dependence = rep(c(NA, "housing_described_tool"), each = 2)) %>%
+  mutate(dependence = rep(c(NA, "describe_housing_tool"), each = 2)) %>%
   mutate(dependence_value = rep(c(NA, "Yes"), each = 2))
 
 blinded_conduct <- tibble(
@@ -145,12 +147,12 @@ blinded_conduct <- tibble(
     each = 2),
   option = rep(c("Yes","No"), length(question)/2),
   input_type = rep("y/n", length(question)),
-  input_id = rep(c("blinding_mentioned_tool","blinding_general_tool",
-                   "blinding_explicit_tool","blinding_general_appropr_tool",
-                   "blinding_explicit_appropr_tool"), each = 2),
+  input_id = rep(c("mention_blinding_tool","blinding_general_tool",
+                   "blinding_explicit_tool","blinding_general_appropriate_tool",
+                   "blinding_explicit_appropriate_tool"), each = 2),
   required = TRUE,
   page = 6) %>%
-  mutate(dependence = rep(c(NA, "blinding_mentioned_tool", "blinding_general_tool", 
+  mutate(dependence = rep(c(NA, "mention_blinding_tool", "blinding_general_tool", 
                             "blinding_general_tool","blinding_explicit_tool"), each = 2)) %>%
   mutate(dependence_value = rep(c(NA, "Yes","No","Yes","Yes"), each = 2))
 
@@ -164,14 +166,14 @@ random_outcome_assessment <- tibble(
     each = 2),
   option = rep(c("Yes","No"), length(question)/2),
   input_type = rep("y/n", length(question)),
-  input_id = rep(c("randomiz_mentioned_tool","randomiz_general_tool",
-                   "random_process_outcome_selection_desccribed_tool",
-                   "random_method_general_described_appropriate_tool",
-                   "random_method_described_appropriate_tool"), each = 2),
+  input_id = rep(c("mention_random_tool","mention_random_general_tool",
+                   "describe_random_outcome_selection_tool",
+                   "random_general_appropriate_tool",
+                   "random_explicit_appropriate_tool"), each = 2),
   required = TRUE,
   page = 7) %>%
-  mutate(dependence = rep(c(NA, "randomiz_mentioned_tool", "randomiz_general_tool", 
-                            "randomiz_general_tool","random_process_outcome_selection_desccribed_tool"), each = 2)) %>%
+  mutate(dependence = rep(c(NA, "mention_random_tool", "mention_random_general_tool", 
+                            "mention_random_general_tool","describe_random_outcome_selection_tool"), each = 2)) %>%
   mutate(dependence_value = rep(c(NA, "Yes","No","Yes","Yes"), each = 2))
 
 
@@ -185,16 +187,16 @@ blinded_outcome_assessment <- tibble(
     each = 2),
   option = rep(c("Yes","No"), length(question)/2),
   input_type = rep("y/n", length(question)),
-  input_id = rep(c("blind_outcome_mentioned_tool","blind_outcome_general_tool",
-                   "blind_assessors_explicit_tool",
-                   "blind_method_outcome_general_described_appropriate_tool",
-                   "blind_method_outcome_appropriate_tool"), each = 2),
+  input_id = rep(c("mention_blinding_outcome_tool",
+                   "blinding_outcome_general_tool",
+                   "blinding_assessors_explicit_tool",
+                   "blinding_outcome_general_appropriate_tool",
+                   "blinding_outcome_explicit_appropriate_tool"), each = 2),
   required = TRUE,
   page = 8) %>%
-  mutate(dependence = rep(c(NA, "blind_outcome_mentioned_tool", "blind_outcome_general_tool", 
-                            "blind_outcome_general_tool","blind_assessors_explicit_tool"), each = 2)) %>%
+  mutate(dependence = rep(c(NA, "mention_blinding_outcome_tool", "blinding_outcome_general_tool", 
+                            "blinding_outcome_general_tool","blinding_assessors_explicit_tool"), each = 2)) %>%
   mutate(dependence_value = rep(c(NA, "Yes","No","Yes","Yes"), each = 2))
-
 
 
 
@@ -211,9 +213,9 @@ incomplete_outcome_data <- tibble(
     each = 2),
   option = rep(c("Yes","No"), length(question)/2),
   input_type = rep("y/n", length(question)),
-  input_id = rep(c("dropout_described_tool",
-                   "num_started_report_tool",
-                   "num_analyzed_report_tool",
+  input_id = rep(c("describe_dropout_tool",
+                   "report_num_started_tool",
+                   "report_num_analyzed_tool",
                    "start_analyzed_match_tool",
                    "dropout_exists_tool",
                    "number_reason_dropout_tool",
@@ -222,10 +224,10 @@ incomplete_outcome_data <- tibble(
   required = TRUE,
   page = 9) %>%
   mutate(dependence = rep(c(NA, 
-                            "dropout_described_tool", 
-                            "num_started_report_tool", 
-                            "num_analyzed_report_tool",
-                            "dropout_described_tool",
+                            "describe_dropout_tool", 
+                            "report_num_started_tool", 
+                            "report_num_analyzed_tool",
+                            "describe_dropout_tool",
                             "dropout_exists_tool",
                             "number_reason_dropout_tool",
                             "number_reason_equal_tool"), each = 2)) %>%
@@ -277,7 +279,8 @@ funder_influence <- tibble(
     each = 2),
   option = rep(c("Yes","No"), length(question)/2),
   input_type = rep("y/n", length(question)),
-  input_id = rep(c("coi_statement_tool","coi_reported_tool"), each = 2),
+  input_id = rep(c("coi_statement_tool",
+                   "coi_reported_tool"), each = 2),
   required = TRUE,
   page = 11) %>%
   mutate(dependence = rep(c(NA, "coi_statement_tool"), each = 2)) %>%
@@ -291,7 +294,9 @@ unit_of_analysis <- tibble(
     each = 2),
   option = rep(c("Yes","No"), length(question)/2),
   input_type = rep("y/n", length(question)),
-  input_id = rep(c("treatm_dissolved_tool","indiv_housing_tool","cages_unit_tool"), each = 2),
+  input_id = rep(c("treatm_dissolved_tool",
+                   "indiv_housing_tool",
+                   "cages_unit_tool"), each = 2),
   required = TRUE,
   page = 12) %>%
   # mutate(input_id = gsub('\\b(\\pL)\\pL{3,}|.','\\U\\1', question, perl = TRUE)) %>%
@@ -311,21 +316,59 @@ animal_addition <- tibble(
   mutate(dependence_value = rep(c(NA), each = 2))
 
 df <- rbind(metadata,
-            instructions,
+            # instructions,
             sequence_allocation, 
-            baseline_characteristics,
-            allocation_concealment,
-            random_housing,
-            blinded_conduct,
-            random_outcome_assessment,
-            blinded_outcome_assessment,
-            incomplete_outcome_data,
-            selective_outcome_reporting,
-            funder_influence,
+            # baseline_characteristics,
+            # allocation_concealment,
+            # random_housing,
+            # blinded_conduct,
+            # random_outcome_assessment,
+            # blinded_outcome_assessment,
+            # incomplete_outcome_data,
+            # selective_outcome_reporting,
+            # funder_influence,
             unit_of_analysis,
             animal_addition) %>% 
   arrange(page)
 
 
+# Clean responses ---------------------------------------------------------
 
+outcomes <- fread(here::here("outcomes.csv"), header = T, na.strings = c("")) %>%
+  select(bias_type, response, outcome)
+
+# clean survey responses into tidy format
+tidy_responses <- function(responses){
+  responses <- responses %>%
+    mutate(study_id = responses %>% filter(question_id %in% "study_id") %>% pull(response)) %>%
+    mutate(study_doi = (responses %>% filter(question_id %in% "study_doi") %>% pull(response))) %>% 
+    rename(response_id = response) %>% 
+    mutate(response = interaction(question_id, response_id)) %>%
+    filter(!question_id %in% c("study_id","study_doi")) %>% 
+    left_join(outcomes, by="response") %>% 
+    filter(!is.na(outcome)) %>% 
+    select(study_id, study_doi, question_id, bias_type, response_id, outcome)
+  return(responses)
+}
+
+# this function should concatenate multiple rob assessments and prepare for visualization
+prepare_robvis <- function(dat){
+  dat <- dat %>% 
+    select(study_id, bias_type, outcome) %>% 
+    pivot_wider(names_from = bias_type, values_from = outcome)
+  return(dat)
+}
+
+# response_data <- fread("test_responses.csv", header = T)
+# 
+# test <- response_data %>% 
+#   tidy_responses() %>%
+#   prepare_robvis()
+
+# test %>% prepare_robvis(()
+
+
+robvis::rob_traffic_light(data4plot, tool="Generic", overall = F)
+
+robvis::rob_summary(data4plot, tool="Generic", overall = F)
 

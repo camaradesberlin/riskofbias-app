@@ -67,8 +67,14 @@ server <- function(input, output, session) {
   
   # aggregate responses to one df
   response_data <- eventReactive(input$submit, {
-    shinysurveys::getSurveyData() 
-    # tidy up this function for desired output
+    shinysurveys::getSurveyData()
+    
+  })
+  
+  # tidy up df for desired output
+  tidy_responses <- reactive({
+    response_data() %>% 
+      clean_responses()
   })
   
   # get study id for output filename
@@ -81,6 +87,7 @@ server <- function(input, output, session) {
   # when responses are submitted show Download button and reset input values
   observeEvent(input$submit, {
     shinyjs::show("downloadResponses")
+
     # shinyjs::reset("tool") # does not work?
   })
   
@@ -90,7 +97,7 @@ server <- function(input, output, session) {
           paste0(study_id(), "_RoB_", Sys.Date(), ".csv")
         },
         content = function(file) {
-          write.csv(response_data(), file)
+          write.csv(tidy_responses(), file)
         }
       )
 }
