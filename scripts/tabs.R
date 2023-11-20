@@ -331,5 +331,18 @@ tool <- tabItem(
   )
 
 
+# Data visualization ------------------------------------------------------
+
+data_viz <- tabItem(
+  tabName = "data_viz",
+  h1("Traffic light plots"),
+  fluidRow(
+    column(
+      width = 8,
+      plotOutput("trafficlightplot"),
+      plotOutput("robsummaryplot")
+      )
+    )
+  )
 
 

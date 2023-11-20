@@ -318,7 +318,7 @@ animal_addition <- tibble(
 df <- rbind(metadata,
             # instructions,
             sequence_allocation, 
-            # baseline_characteristics,
+            baseline_characteristics,
             # allocation_concealment,
             # random_housing,
             # blinded_conduct,
@@ -326,7 +326,7 @@ df <- rbind(metadata,
             # blinded_outcome_assessment,
             # incomplete_outcome_data,
             # selective_outcome_reporting,
-            # funder_influence,
+            funder_influence,
             unit_of_analysis,
             animal_addition) %>% 
   arrange(page)
@@ -358,17 +358,4 @@ prepare_robvis <- function(dat){
     pivot_wider(names_from = bias_type, values_from = outcome)
   return(dat)
 }
-
-# response_data <- fread("test_responses.csv", header = T)
-# 
-# test <- response_data %>% 
-#   tidy_responses() %>%
-#   prepare_robvis()
-
-# test %>% prepare_robvis(()
-
-
-robvis::rob_traffic_light(data4plot, tool="Generic", overall = F)
-
-robvis::rob_summary(data4plot, tool="Generic", overall = F)
 

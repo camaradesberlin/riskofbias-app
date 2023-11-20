@@ -54,7 +54,8 @@ body <- dashboardBody(
     attrition_bias, 
     reporting_bias,
     other_bias,
-    tool
+    tool,
+    data_viz
     )
   )
 
@@ -72,9 +73,9 @@ server <- function(input, output, session) {
   })
   
   # tidy up df for desired output
-  tidy_responses <- reactive({
+  data_tidy <- reactive({
     response_data() %>% 
-      clean_responses()
+      tidy_responses()
   })
   
   # get study id for output filename
@@ -87,7 +88,6 @@ server <- function(input, output, session) {
   # when responses are submitted show Download button and reset input values
   observeEvent(input$submit, {
     shinyjs::show("downloadResponses")
-
     # shinyjs::reset("tool") # does not work?
   })
   
@@ -97,9 +97,24 @@ server <- function(input, output, session) {
           paste0(study_id(), "_RoB_", Sys.Date(), ".csv")
         },
         content = function(file) {
-          write.csv(tidy_responses(), file)
+          write.csv(data_tidy(), file)
         }
       )
+  
+  # prepare responses for plotting
+  data_plot <- reactive({
+    data_tidy() %>% 
+      prepare_robvis()
+  })
+  
+  # traffic light plots
+  output$trafficlightplot <- renderPlot({
+    robvis::rob_traffic_light(data_plot(), tool = "Generic")
+  })
+  
+  output$robsummaryplot <- renderPlot({
+    robvis::rob_summary(data_plot(), tool = "Generic")
+  })
 }
 
 shinyApp(ui, server)
