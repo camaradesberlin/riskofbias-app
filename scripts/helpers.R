@@ -316,16 +316,16 @@ animal_addition <- tibble(
   mutate(dependence_value = rep(c(NA), each = 2))
 
 df <- rbind(metadata,
-            # instructions,
+            instructions,
             sequence_allocation, 
             baseline_characteristics,
-            # allocation_concealment,
-            # random_housing,
-            # blinded_conduct,
-            # random_outcome_assessment,
-            # blinded_outcome_assessment,
-            # incomplete_outcome_data,
-            # selective_outcome_reporting,
+            allocation_concealment,
+            random_housing,
+            blinded_conduct,
+            random_outcome_assessment,
+            blinded_outcome_assessment,
+            incomplete_outcome_data,
+            selective_outcome_reporting,
             funder_influence,
             unit_of_analysis,
             animal_addition) %>% 
@@ -355,8 +355,7 @@ tidy_responses <- function(responses){
 prepare_robvis <- function(dat){
   dat <- dat %>% 
     select(study_id, bias_type, outcome) %>% 
+    group_by(study_id) %>% 
     pivot_wider(names_from = bias_type, values_from = outcome)
   return(dat)
 }
-
-

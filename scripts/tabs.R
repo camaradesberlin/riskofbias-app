@@ -326,6 +326,11 @@ tool <- tabItem(
       downloadButton(
         "downloadResponses","Download responses"
         )
+      ),
+    shinyjs::hidden(
+      actionButton(
+        "resetResponses","Reset responses"
+        )
       )
     )
   )
@@ -333,16 +338,55 @@ tool <- tabItem(
 
 # Data visualization ------------------------------------------------------
 
-data_viz <- tabItem(
-  tabName = "data_viz",
-  h1("Traffic light plots"),
+plots <- tabItem(
+  tabName = "plots",
+  h1("Risk of bias plots"),
   fluidRow(
     column(
-      width = 8,
-      plotOutput("trafficlightplot"),
-      plotOutput("robsummaryplot")
+      width = 6,
+      box(
+        title = "Upload data",
+        selectInput(
+          inputId = "dataformat",
+          label = "Select data format",
+          choices = list("app","SyRF"),
+          selected = character(0)
+          ),
+        fileInput(
+          inputId = "uploadfile", 
+          label = "Upload csv file",
+          accept = c(".csv")
+        ),
+        selectInput(
+          inputId = "plotformat",
+          label = "Select type of plot",
+          choices = list("Traffic light plot", "Summary plot"),
+          selected = character(0)
+        ),
+        actionButton(
+          inputId = "generateplot",
+          label = "Generate plot"
+        ),
+        shinyjs::hidden(
+          selectInput(
+            inputId = "plotOutputFormat",
+            label = "Select format of plot output",
+            choices = list(".png",".jpg",".tiff")
+          )
+        ),
+        shinyjs::hidden(
+          downloadButton(
+            "downloadPlot","Download plot"
+          )
+        )
+      )
+    ),
+    column(
+      width = 6,
+      plotOutput("robplot")
+      # plotOutput("trafficlightplot"),
+      # plotOutput("robsummaryplot")
       )
     )
   )
-
 

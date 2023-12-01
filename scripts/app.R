@@ -10,6 +10,7 @@ header <- dashboardHeader(title = "CAMARADES Risk of Bias Assessment Tool",
 
 sidebar <- dashboardSidebar(
   sidebarMenu(
+    id = "tabs",
     menuItem(
       "About", tabName = "about"
       ),
@@ -38,7 +39,7 @@ sidebar <- dashboardSidebar(
       "Assessment tool", tabName = "tool"
     ),
     menuItem(
-      "Visualize data", tabName = "data_viz"
+      "Plots", tabName = "plots"
     )
   )
 )
@@ -55,7 +56,7 @@ body <- dashboardBody(
     reporting_bias,
     other_bias,
     tool,
-    data_viz
+    plots
     )
   )
 
@@ -88,7 +89,7 @@ server <- function(input, output, session) {
   # when responses are submitted show Download button and reset input values
   observeEvent(input$submit, {
     shinyjs::show("downloadResponses")
-    # shinyjs::reset("tool") # does not work?
+    shinyjs::show("resetResponses")
   })
   
   # download responses (csv file)
@@ -101,20 +102,60 @@ server <- function(input, output, session) {
         }
       )
   
+
+  # read in uploaded data
+  userdata <- reactive({ 
+    req(input$uploadfile) #  require that the input is available
+    
+    inFile <- input$uploadfile 
+    
+    df <- read.csv(inFile$datapath, sep = ",")
+    
+    return(df)
+  })
+  
   # prepare responses for plotting
   data_plot <- reactive({
-    data_tidy() %>% 
+    userdata() %>% 
       prepare_robvis()
   })
   
-  # traffic light plots
-  output$trafficlightplot <- renderPlot({
-    robvis::rob_traffic_light(data_plot(), tool = "Generic")
+  # get plot format
+  plotformat <- reactive({
+    switch(input$plotformat,
+           `Traffic light plot` = "rob_traffic_light",
+           `Summary plot` = "rob_summary"
+    )
   })
   
-  output$robsummaryplot <- renderPlot({
-    robvis::rob_summary(data_plot(), tool = "Generic")
+  # generate plot
+  observeEvent(input$generateplot, {
+    output$robplot <- renderPlot({
+      
+      # if(plotformat() %in% "rob_traffic_light") {
+      #   robvis::rob_traffic_light(data_plot(), tool = "Generic")
+      # }
+      # if(plotformat() %in% "rob_summary") {
+      #   robvis::rob_summary(data_plot(), tool = "Generic")
+      # }
+      robvis::rob_traffic_light(data_plot(), tool = "Generic")
+    })
   })
+  
+  # traffic light plots
+  # output$trafficlightplot <- renderPlot({
+  #   robvis::rob_traffic_light(data_plot(), tool = "Generic")
+  # })
+  # 
+  # output$robsummaryplot <- renderPlot({
+  #   robvis::rob_summary(data_plot(), tool = "Generic")
+  # })
+  
+  # reset responses
+  observeEvent(input$resetResponses, {
+    session$reload()
+  })
+  
 }
 
 shinyApp(ui, server)
