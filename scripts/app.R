@@ -7,54 +7,117 @@ source(here::here("scripts","tabs.R"))
 header <- dashboardHeader(title = "CAMARADES Risk of Bias Assessment Tool",
                           titleWidth = 450)
 
-
 sidebar <- dashboardSidebar(
   sidebarMenu(
-    id = "tabs",
+    id = "sidebarmenu",
     menuItem(
-      "About", tabName = "about"
+      "About",
+      tabName = "about"
       ),
     menuItem(
-      "Types of bias", tabName = "tob",
-      menuSubItem(
-        "Selection Bias", tabName = "select_bias"
+      "Types of bias",
+      tabName = "types",
+      menuItem(
+        "Selection bias", startExpanded = TRUE,
+        tabName = "selection_bias",
+        menuSubItem(
+          "1. Sequence allocation",
+          tabName = "sequence_allocation"
+          ),
+        menuSubItem(
+          "2. Baseline characteristics",
+          tabName = "baseline_characteristics"
+          ),
+        menuSubItem(
+          "3. Allocation concealment",
+          tabName = "allocation_concealment"
+          )
         ),
-      menuSubItem(
-        "Performance Bias", tabName = "perform_bias"
+      menuItem(
+        "Performance bias",
+        tabName = "performance_bias",
+        menuSubItem(
+          "4. Random housing",
+          tabName = "random_housing"
+          ),
+        menuSubItem(
+          "5. Blinded conduct of the experiment",
+          tabName = "blinded_conduct"
+          )
         ),
-      menuSubItem(
-        "Detection Bias", tabName = "detect_bias"
+      menuItem(
+        "Detection bias",
+        tabName = "detection_bias",
+        menuSubItem(
+          "6. Random outcome assessment",
+          tabName = "random_outcome"
         ),
-      menuSubItem(
-        "Attrition Bias", tabName = "attr_bias"
-        ),
-      menuSubItem(
-        "Reporting Bias", tabName = "report_bias"
-        ),
-      menuSubItem(
-        "Other Sources of Bias", tabName = "other_bias"
+        menuSubItem(
+          "7. Blinded outcome assessment",
+          tabName = "blind_outcome"
         )
       ),
-    menuItem(
-      "Assessment tool", tabName = "tool"
+      menuItem(
+        "Attrition bias",
+        tabName = "attrition_bias",
+        menuSubItem(
+          "8. Incomplete outcome data",
+          tabName = "incomplete_outcome"
+        )
+      ),
+      menuItem(
+        "Reporting bias",
+        tabName = "reporting_bias",
+        menuSubItem(
+          "9. Selective outcome reporting",
+          tabName = "selective_reporting"
+        )
+      ),
+      menuItem(
+        "Other sources of bias",
+        tabName = "other_bias",
+        menuSubItem(
+          "10.1 Inappropriate influence of funders",
+          tabName = "funder_influence"
+        ),
+        menuSubItem(
+          "10.2 Unit of analysis bias",
+          tabName = "analysis_unit"
+        ),
+        menuSubItem(
+          "10.3 Addition of animals",
+          tabName = "animal_addition"
+        )
+      )
     ),
     menuItem(
-      "Plots", tabName = "plots"
+      "Assessment tool",
+      tabName = "tool"
+    ),
+    menuItem(
+      "Plots",
+      tabName = "plots"
     )
   )
 )
+
 
 body <- dashboardBody(
   useShinyjs(),
   tabItems(
     about,
-    types,
-    selection_bias,
-    performance_bias,
-    detection_bias, 
-    attrition_bias, 
-    reporting_bias,
-    other_bias,
+    sequence_allocation,
+    baseline_characteristics,
+    allocation_concealment,
+    random_housing,
+    blinded_conduct,
+    random_outcome,
+    blind_outcome,
+    incomplete_outcome,
+    selective_reporting,
+    funder_influence,
+    analysis_unit,
+    animal_addition,
     tool,
     plots
     )
@@ -142,16 +205,8 @@ server <- function(input, output, session) {
     })
   })
   
-  # traffic light plots
-  # output$trafficlightplot <- renderPlot({
-  #   robvis::rob_traffic_light(data_plot(), tool = "Generic")
-  # })
-  # 
-  # output$robsummaryplot <- renderPlot({
-  #   robvis::rob_summary(data_plot(), tool = "Generic")
-  # })
-  
-  # reset responses
+
+  # reload session to reset responses
   observeEvent(input$resetResponses, {
     session$reload()
   })
