@@ -177,35 +177,63 @@ server <- function(input, output, session) {
     return(df)
   })
   
+  
   # prepare responses for plotting
   data_plot <- reactive({
     userdata() %>% 
       prepare_robvis()
   })
   
-  # get plot format
-  plotformat <- reactive({
-    switch(input$plotformat,
-           `Traffic light plot` = "rob_traffic_light",
-           `Summary plot` = "rob_summary"
-    )
-  })
   
   # generate plot
   observeEvent(input$generateplot, {
     output$robplot <- renderPlot({
-      
-      # if(plotformat() %in% "rob_traffic_light") {
-      #   robvis::rob_traffic_light(data_plot(), tool = "Generic")
-      # }
-      # if(plotformat() %in% "rob_summary") {
-      #   robvis::rob_summary(data_plot(), tool = "Generic")
-      # }
-      robvis::rob_traffic_light(data_plot(), tool = "Generic")
+      if (input$showPlotType == "Traffic light plot"){
+        robvis::rob_traffic_light(data_plot(), tool = "Generic")
+      }
+      else if (input$showPlotType == "Summary plot"){
+        robvis::rob_summary(data_plot(), tool = "Generic")
+      } 
     })
   })
   
-
+  plot.format <- reactive({
+    switch(
+      input$formatplot,
+      "png" = "png",
+      "pdf" =	"pdf",
+      "tiff" =	"tiff"
+    )
+  })
+    
+  plot.type <- reactive({
+    switch(
+      input$savePlotType,
+      "Traffic light" = "trafficLightPlot",
+      "Summary" =	"summaryPlot"
+      )
+    })
+  
+  
+  output$downloadPlot <- downloadHandler(
+    filename = function() { 
+      in_filename <- tools::file_path_sans_ext(input$uploadfile)
+      paste0(in_filename, "_RoB_", plot.type(), ".", plot.format())
+      },
+    content = function(file) {
+      if (input$savePlotType == "Traffic light") {
+        p_traffic <- robvis::rob_traffic_light(data_plot(), tool = "Generic")
+        ggsave(file, plot = p_traffic, device = plot.format())
+      }
+      
+      else if (input$savePlotType == "Summary") {
+        p_summary <- robvis::rob_summary(data_plot(), tool = "Generic")
+        ggsave(file, plot = p_summary, device = plot.format())
+        
+      }
+    }
+  )
+  
   # reload session to reset responses
   observeEvent(input$resetResponses, {
     session$reload()

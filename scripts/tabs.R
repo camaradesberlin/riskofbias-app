@@ -650,7 +650,7 @@ plots <- tabItem(
           accept = c(".csv")
         ),
         selectInput(
-          inputId = "plotformat",
+          inputId = "showPlotType",
           label = "Select type of plot",
           choices = list("Traffic light plot", "Summary plot"),
           selected = character(0)
@@ -659,26 +659,50 @@ plots <- tabItem(
           inputId = "generateplot",
           label = "Generate plot"
         ),
-        shinyjs::hidden(
+        dropdown(
+          right = FALSE,
+          animate = FALSE,
           selectInput(
-            inputId = "plotOutputFormat",
+            inputId = "savePlotType",
+            label = "Select type of plot output",
+            choices = c("Traffic light", "Summary"),
+            multiple = FALSE,
+            selected = "Traffic light",
+            width = "auto"
+          ),
+          selectInput(
+            inputId = "formatplot",
             label = "Select format of plot output",
-            choices = list(".png",".jpg",".tiff")
-          )
-        ),
-        shinyjs::hidden(
-          downloadButton(
-            "downloadPlot","Download plot"
-          )
+            choices = list("png","pdf","tiff"),
+            multiple = FALSE,
+            selected = ".png",
+            width = "auto"
+          ),
+          br(),
+          br(),
+          downloadButton('downloadPlot','Save'),
+          # icon = icon("file-alt"),
+          up = FALSE,
+          label = "Save plot",
+          size = "default",
+          inputId = "saveplot"
         )
       )
     ),
     column(
       width = 6,
-      plotOutput("robplot")
-      # plotOutput("trafficlightplot"),
-      # plotOutput("robsummaryplot")
+        plotOutput("robplot")
       )
     )
   )
 
+
+
+
+
+
+
+
+           
+         
+         
