@@ -1,13 +1,14 @@
 # Load data ---------------------------------------------------------------
 
-source(here::here("scripts","helpers.R"))
-source(here::here("scripts","tabs.R"))
+source(here::here("R","helpers.R"))
+source(here::here("R","tabs.R"))
 
 
 header <- dashboardHeader(title = "CAMARADES Risk of Bias Assessment Tool",
                           titleWidth = 450)
 
 sidebar <- dashboardSidebar(
+  width = 320,
   sidebarMenu(
     id = "sidebarmenu",
     menuItem(
@@ -18,7 +19,7 @@ sidebar <- dashboardSidebar(
       "Types of bias",
       tabName = "types",
       menuItem(
-        "Selection bias", startExpanded = TRUE,
+        "Selection bias",
         tabName = "selection_bias",
         menuSubItem(
           "1. Sequence allocation",
@@ -104,6 +105,7 @@ sidebar <- dashboardSidebar(
 
 body <- dashboardBody(
   useShinyjs(),
+  tags$style(shiny::HTML(mystyle)),
   tabItems(
     about,
     sequence_allocation,

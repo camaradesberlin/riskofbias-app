@@ -4,9 +4,13 @@ library(shiny)
 library(tidyverse)
 library(shinydashboard)
 library(shinyjs)
+library(bslib)
 library(shinysurveys)
 library(data.table)
 library(robvis)
+library(shinyWidgets)
+library(sass)
+# library(dashboardthemes)
 # library(semantic.dashboard)
 
 
@@ -26,6 +30,35 @@ library(robvis)
 #   debug_msg(sprintf(fmt, ...))
 # }
 
+# display tab box titles after tabs
+
+tab_title <- function(string) {
+  HTML(paste("", string, sep = "<br/>"))
+}
+
+# Custom theme ------------------------------------------------------------
+
+# sass::sass(
+#   sass_file(here::here("www","style.scss")),
+#   output = here::here("www", "style.css")
+# )
+
+mystyle <- sass::sass(
+  list(
+    list(
+      color = "#60ab9b"
+      ),
+    readLines(
+      here::here(
+        "www","style.scss")
+      )
+    )
+  )
+
+
+
+
+# includeCSS("www/style.css")
 
 # Data for survey structure -----------------------------------------------
 
@@ -43,18 +76,25 @@ metadata <- tibble(
   mutate(dependence_value = NA)
 
 instructions <- tibble(
-  question = c("(This should be a heading) Sequence allocation",
-               "Baseline characteristics",
-               "Allocation concealment",
-               "Random housing",
-               "Blinded conduct of the experiment",
-               "Random outcome assessment",
-               "Blinded outcome assessment",
-               "Incomplete outcome data",
-               "Selective outcome reporting",
-               "Inappropriate influence of funders",
-               "Unit of analysis bias",
-               "Addition of animals"),
+  question = c(
+  "### Sequence allocation
+  Describe the methods used, if any, to generate the allocation sequence in sufficient detail 
+  to allow an assessment whether it should produce comparable groups.",
+  "### Baseline characteristics
+  Describe all the possible prognostic factors or animal characteristics, if any, that are 
+  compared in order to judge whether or not intervention and control groups were similar 
+  at the start of the experiment.",
+  "### Allocation concealment",
+  "### Random housing",
+  "### Blinded conduct of the experiment",
+  "### Random outcome assessment",
+  "### Blinded outcome assessment",
+  "### Incomplete outcome data",
+  "### Selective outcome reporting",
+  "### Inappropriate influence of funders",
+  "### Unit of analysis bias",
+  "### Addition of animals"
+  ),
   option = c(NA),
   input_type = c("instructions"),
   input_id = c("seqalloc_instruct",
@@ -77,7 +117,7 @@ instructions <- tibble(
 
 sequence_allocation <- tibble(
   question = rep(
-    c("Did the authors compare two cohorts of the same model?",
+    c("Did the authors compare two cohorts of the same genetic model?",
       "Do the authors report random allocation to group?",
       "Did the authors describe a random component in the sequence generation process?",
       "Was the method chosen appropriate to achieve random sequence allocation?"),
@@ -89,9 +129,30 @@ sequence_allocation <- tibble(
   required = TRUE,
   page = 2) %>%
   # mutate(input_id = gsub('\\b(\\pL)\\pL{3,}|.','\\U\\1', question, perl = TRUE)) %>%
-  mutate(dependence = rep(c(NA, "same_model_tool", "report_random_allocation_tool", 
+  mutate(dependence = rep(c(NA, "same_model_tool", "report_random_allocation_tool",
                             "describe_random_component_tool"), each = 2)) %>%
   mutate(dependence_value = rep(c(NA, "Yes","Yes","Yes"), each = 2))
+
+# sequence_allocation <- tibble(
+#   question = rep(
+#     c("Did the authors compare two cohorts of the same genetic model?",
+#       "Do the authors report random allocation to group?",
+#       "Did the authors describe a random component in the sequence generation process?",
+#       "Was the method chosen appropriate to achieve random sequence allocation?"),
+#     each = 3),
+#   option = rep(c("Yes","No", NA), length(question)/3),
+#   input_type = rep(c("y/n","y/n","text"), length(question)/3),
+#   input_id = rep(c("same_model_tool","report_random_allocation_tool",
+#                    "describe_random_component_tool","appropriate_randomization_tool"), each = 3),
+#   required = TRUE,
+#   page = 2) %>%
+#   # mutate(input_id = gsub('\\b(\\pL)\\pL{3,}|.','\\U\\1', question, perl = TRUE)) %>%
+#   mutate(required = ifelse(input_type == "y/n", TRUE, FALSE)) %>%
+#   mutate(input_id = ifelse(input_type == "text", paste0(input_id, "_text"), input_id)) %>%
+#   mutate(question = ifelse(input_type == "text", "Justification", question)) %>% 
+#   mutate(dependence = rep(c(NA, "same_model_tool", "report_random_allocation_tool",
+#                             "describe_random_component_tool"), each = 3)) %>%
+#   mutate(dependence_value = rep(c(NA, "Yes","Yes","Yes"), each = 3))
 
 
 baseline_characteristics <- tibble(
@@ -329,13 +390,14 @@ df <- rbind(metadata,
             funder_influence,
             unit_of_analysis,
             animal_addition) %>% 
-  arrange(page)
+  arrange(page) %>%
+  mutate_all(as.character)
 
 
 # Clean responses ---------------------------------------------------------
 
-outcomes <- fread(here::here("outcomes.csv"), header = T, na.strings = c("")) %>%
-  select(bias_type, response, outcome)
+# outcomes <- fread(here::here("outcomes.csv"), header = T, na.strings = c("")) %>%
+#   select(bias_type, response, outcome)
 
 # clean survey responses into tidy format
 tidy_responses <- function(responses){
@@ -359,3 +421,7 @@ prepare_robvis <- function(dat){
     pivot_wider(names_from = bias_type, values_from = outcome)
   return(dat)
 }
+
+# test_responses_multi <- fread("test_responses_multi.csv") %>% prepare_robvis()
+
+# robvis::rob_summary(test_responses_multi, tool = "Generic")

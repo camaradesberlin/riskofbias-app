@@ -1,0 +1,275 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro|Montserrat|Raleway');
+
+$little_dark: darken($color, 5%);
+$middle_dark: darken($color, 10%);
+$little_light: lighten($color, 5%);
+$middle_light: lighten($color, 10%);
+$questions_background: $middle_light;
+$light: lighten($color, 15%);
+$dark: darken($color, 15%);
+
+/* logo color */
+.skin-blue .main-header .logo {
+  background-color: #fff;
+  color: #235444;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+}
+
+.skin-blue .main-header .logo:hover {
+  background-color: #235444;
+  color: #fff;
+}
+
+/* rest of navbar color */                        
+.skin-blue .main-header .navbar {
+  background-color: #fff;
+  color: #235444;
+}
+
+/* sidebar toggle color */
+
+.skin-blue .main-header .navbar .sidebar:hover {
+  background: #235444;
+}
+
+/* sidebar color */
+.skin-blue .main-sidebar {
+  background-color: #aac3bb;
+}
+
+.skin-blue .sidebar-menu>li.active>a, 
+.skin-blue .sidebar-menu>li:hover>a {
+    color: #fff;
+    background: #235444;
+    border-left-color: #aac3bb;
+}
+
+.skin-blue .sidebar-menu .treeview-menu>li {
+  background: #235444;
+}
+
+.skin-blue .treeview-menu>li>a {
+    color: #999;
+}
+
+.skin-blue .sidebar a {
+  color: #333;
+}
+
+.content-wrapper, .right-side {
+  background-color: #fff;
+}
+
+body {
+	font-family: 'Raleway', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	color: #333;
+	font-family: 'Montserrat', sans-serif;
+}
+
+h1, h2, h3 {
+	text-transform: none;
+	text-align: left;
+	letter-spacing: .1em;
+	line-height: 1.2;
+}
+
+h1 {
+  color: #235444;
+  font-size: 3rem;
+  font-weight: bold;
+	margin: 20px 0;
+
+	&.title {
+	  color: #416983;;
+	}
+}
+
+h3 {
+	font-style: normal;
+	font-family: 'Montserrat', sans-serif;
+}
+
+h4 {
+  font-weight: bold;
+	font-family: 'Montserrat', sans-serif;
+}
+
+p {
+	color: #333;
+	margin: 0px;
+	margin-bottom: 10px;
+	font-family: 'Raleway', sans-serif;
+}
+
+li.l {
+  margin-left: 40px;
+  margin-right: 35px;
+}
+
+input[type=text]:focus {
+  border-bottom: 1.5px solid $little_dark;
+  -webkit-box-shadow: none
+}
+
+input[type=text] {
+  font-size: 1.5rem;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  border-bottom: 1px dashed rgba(0,0,0,0.12);
+  padding: 15px 0;
+  outline: none;
+  color: #3A506B;
+  background-color: transparent;
+}
+
+label {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+.required {
+  color: red;
+}
+
+/* tab boxes */
+
+.nav-tabs-custom {
+  background: #235444;
+  color: #fff;
+  margin-bottom: 10px;
+  border-radius: 20px;
+}
+
+.nav-tabs-custom>.nav-tabs {
+  border-bottom-color: #235444;
+  
+}
+
+.nav-tabs-custom>.nav-tabs>li.header {
+    line-height: 35px;
+    padding: 5 5px;
+    font-size: 16px;
+    color: #fff;
+}
+
+.nav-tabs-custom>.nav-tabs>li.active>a {
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-radius: 20px;
+}
+
+/* for the color indicating which tab is active */
+.nav-tabs-custom .nav-tabs li.active {
+    border-top-color: transparent;
+}
+
+.nav-tabs-custom>.nav-tabs>li>a {
+    color: #fff;
+}
+
+.container-fluid {
+
+    .survey {
+      padding: 5px;
+      padding-left: 0%;
+      padding-right: 50%;
+
+      @media (max-width: 1195px) {
+        padding-left: 15%;
+        padding-right: 15%;
+      }
+
+      @media (max-width: 992px) {
+        padding-left: 12.5%;
+        padding-right: 12.5%;
+      }
+
+      @media (max-width: 767px) {
+        padding-left: 10%;
+        padding-right: 10%;
+      }
+
+      @media (max-width: 575px) {
+        padding-left: 7.5%;
+        padding-right: 7.5%;
+      }
+
+      .title-description {
+        background-color: white;
+        border-radius: 20px;
+        border-top: 20px solid $middle_dark;
+        padding: {
+          left: 5%;
+          right: 5%;
+          bottom: 10px;
+        }
+        margin-bottom: 12px;
+
+        #survey-description {
+          text-align: left;
+          margin: 2px;
+          font-size: 1.8rem;
+        }
+
+        #survey-title {
+          text-align: left;
+          margin-top: 20px;
+          margin-bottom: 12px;
+        }
+      }
+
+      .page-hidden {
+        display: none;
+      }
+
+      .questions {
+        display: grid;
+        background-color: white;
+        border: 0px solid #CCCCCC;
+        border-radius: 10px;
+        margin-bottom: 12px;
+        padding: 10px;
+        min-height: 138px;
+        font-size: 1.4rem;
+
+        &.dependence {
+          padding: 0;
+          display: none;
+        }
+
+        .question-input {
+          margin: auto;
+          width: 100%;
+
+          .shiny-input-container {
+            width: 100%;
+            padding: 0;
+
+          }
+        }
+      }
+    }
+  }
+
+/* formatting just for instruction boxes */
+
+.container-fluid .survey .questions .question-input .instructions-only {
+    padding: 10px;
+    border: 2px solid #235444;
+    border-radius: 20px;
+    background: #aac3bb;
+    
+    p {
+      color: #444;
+    }
+    
+    h1, h2, h3 {
+      color: #235444;
+    }
+}
