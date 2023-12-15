@@ -36,6 +36,60 @@ tab_title <- function(string) {
   HTML(paste("", string, sep = "<br/>"))
 }
 
+# define steps of assessment
+
+tool_steps <-
+  c(
+    "1. Sequence allocation",
+    "2. Baseline characteristics",
+    "3. Allocation concealment",
+    "4. Random housing",
+    "5. Blinded conduct of the experiment",
+    "6. Random outcome assessment",
+    "7. Blinded outcome assessment",
+    "8. Incomplete outcome reporting",
+    "9. Selective outcome reporting",
+    "10.1 Inappropriate influence of funders",
+    "10.2 Unit of analysis bias",
+    "10.3 Addition of animals"
+  )
+
+# create item (box in a row) to track progress during the rob assessment
+
+make_step <- function(step) {
+  
+  step_id <- step %>% 
+    {gsub("[[:digit:]]+", "", .)} %>% 
+    {gsub("\\. ", "", .)} %>% 
+    {gsub(" ", "_", .)} %>% 
+    {tolower(.)}
+  
+  box_id <- paste0(step_id, "_step")
+  title_id <- paste0(step_id, "_title")
+  
+    div(
+      id = box_id,
+      fluidRow(
+        box(
+          title = actionLink(title_id, step),
+          width = "100%"
+          )
+        )
+      )
+}
+
+
+# test <- lapply(tool_steps, make_step)
+
+step_ids <- tool_steps %>% 
+  {gsub("[[:digit:]]+", "", .)} %>% 
+  {gsub("\\. ", "", .)} %>% 
+  {gsub(" ", "_", .)} %>% 
+  {tolower(.)}
+
+title_ids <- paste0(step_ids, "_title")
+
+
 # Custom theme ------------------------------------------------------------
 
 # sass::sass(

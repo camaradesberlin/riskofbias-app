@@ -22,72 +22,84 @@ sidebar <- dashboardSidebar(
         "Selection bias",
         tabName = "selection_bias",
         menuSubItem(
-          "1. Sequence allocation",
-          tabName = "sequence_allocation"
+          icon = NULL,
+          tool_steps[[1]],
+          tabName = step_ids[[1]]
           ),
         menuSubItem(
-          "2. Baseline characteristics",
-          tabName = "baseline_characteristics"
+          icon = NULL,
+          tool_steps[[2]],
+          tabName = step_ids[[2]]
           ),
         menuSubItem(
-          "3. Allocation concealment",
-          tabName = "allocation_concealment"
+          icon = NULL,
+          tool_steps[[3]],
+          tabName = step_ids[[3]]
           )
         ),
       menuItem(
         "Performance bias",
         tabName = "performance_bias",
         menuSubItem(
-          "4. Random housing",
-          tabName = "random_housing"
+          icon = NULL,
+          tool_steps[[4]],
+          tabName = step_ids[[4]]
           ),
         menuSubItem(
-          "5. Blinded conduct of the experiment",
-          tabName = "blinded_conduct"
+          icon = NULL,
+          tool_steps[[5]],
+          tabName = step_ids[[5]]
           )
         ),
       menuItem(
         "Detection bias",
         tabName = "detection_bias",
         menuSubItem(
-          "6. Random outcome assessment",
-          tabName = "random_outcome"
+          icon = NULL,
+          tool_steps[[6]],
+          tabName = step_ids[[6]]
         ),
         menuSubItem(
-          "7. Blinded outcome assessment",
-          tabName = "blind_outcome"
+          icon = NULL,
+          tool_steps[[7]],
+          tabName = step_ids[[7]]
         )
       ),
       menuItem(
         "Attrition bias",
         tabName = "attrition_bias",
         menuSubItem(
-          "8. Incomplete outcome data",
-          tabName = "incomplete_outcome"
+          icon = NULL,
+          tool_steps[[8]],
+          tabName = step_ids[[8]]
         )
       ),
       menuItem(
         "Reporting bias",
         tabName = "reporting_bias",
         menuSubItem(
-          "9. Selective outcome reporting",
-          tabName = "selective_reporting"
+          icon = NULL,
+          tool_steps[[9]],
+          tabName = step_ids[[9]]
         )
       ),
       menuItem(
         "Other sources of bias",
         tabName = "other_bias",
         menuSubItem(
-          "10.1 Inappropriate influence of funders",
-          tabName = "funder_influence"
+          icon = NULL,
+          tool_steps[[10]],
+          tabName = step_ids[[10]]
         ),
         menuSubItem(
-          "10.2 Unit of analysis bias",
-          tabName = "analysis_unit"
+          icon = NULL,
+          tool_steps[[11]],
+          tabName = step_ids[[11]]
         ),
         menuSubItem(
-          "10.3 Addition of animals",
-          tabName = "animal_addition"
+          icon = NULL,
+          tool_steps[[12]],
+          tabName = step_ids[[12]]
         )
       )
     ),
@@ -98,6 +110,10 @@ sidebar <- dashboardSidebar(
     menuItem(
       "Plots",
       tabName = "plots"
+    ),
+    menuItem(
+      "Test your skills",
+      tabName = "practice"
     )
   )
 )
@@ -121,7 +137,8 @@ body <- dashboardBody(
     analysis_unit,
     animal_addition,
     tool,
-    plots
+    plots,
+    practice
     )
   )
 
@@ -236,6 +253,26 @@ server <- function(input, output, session) {
     }
   )
   
+  # when info box is clicked, go to relevant info tab
+  
+  lapply(
+    step_ids,
+    function(i){
+      observeEvent(input[[paste0(i, "_title")]], {
+        updateTabItems(session, inputId = "sidebarmenu", selected = i)
+        
+      })
+    }
+  )
+  
+  # lapply(title_ids,
+  #        observeEvent(input$title_ids, {
+  #          updateTabItems(session, inputId = "sidebarmenu", selected = "sequence_allocation")
+  #        })
+  #        )
+  
+  
+
   # reload session to reset responses
   observeEvent(input$resetResponses, {
     session$reload()

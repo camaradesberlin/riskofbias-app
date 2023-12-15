@@ -14,7 +14,7 @@ about <- tabItem(
 # Sequence allocation -----------------------------------------------------
 
 sequence_allocation <- tabItem(
-  tabName = "sequence_allocation",
+  tabName = step_ids[[1]],
   h1("Sequence allocation"),
   "Sequence allocation refers to the allocation of animals to the experimental and 
   control groups. This should be adequately generated, but also adequately applied, with 
@@ -96,7 +96,7 @@ sequence_allocation <- tabItem(
 # Baseline characteristics ------------------------------------------------
 
 baseline_characteristics <- tabItem(
-  tabName = "baseline_characteristics",
+  tabName = step_ids[[2]],
   h1("Baseline characteristics"),
   lorem::ipsum(paragraph = 1),
   br(),
@@ -155,7 +155,7 @@ baseline_characteristics <- tabItem(
 # Allocation concealment --------------------------------------------------
 
 allocation_concealment <- tabItem(
-  tabName = "allocation_concealment",
+  tabName = step_ids[[3]],
   h1("Allocation concealment"),
   lorem::ipsum(paragraph = 1),
   br(),
@@ -213,7 +213,7 @@ allocation_concealment <- tabItem(
 # Random housing ----------------------------------------------------------
 
 random_housing <- tabItem(
-  tabName = "random_housing",
+  tabName = step_ids[[4]],
   h1("Random housing"),
   lorem::ipsum(paragraph = 1),
   br(),
@@ -256,7 +256,7 @@ random_housing <- tabItem(
 # Blinding ----------------------------------------------------------------
 
 blinded_conduct <- tabItem(
-  tabName = "blinded_conduct",
+  tabName = step_ids[[5]],
   h1("Blinded conduct of the experiment"),
   lorem::ipsum(paragraph = 1),
   br(),
@@ -298,7 +298,7 @@ blinded_conduct <- tabItem(
 # Random outcome assessment -----------------------------------------------
 
 random_outcome <- tabItem(
-  tabName = "random_outcome",
+  tabName = step_ids[[6]],
   h1("Random outcome assessment"),
   lorem::ipsum(paragraph = 1),
   br(),
@@ -340,7 +340,7 @@ random_outcome <- tabItem(
 # Blinded outcome assessment ----------------------------------------------
 
 blind_outcome <- tabItem(
-  tabName = "blind_outcome",
+  tabName = step_ids[[7]],
   h1("Blinded outcome assessment"),
   lorem::ipsum(paragraph = 1),
   br(),
@@ -381,7 +381,7 @@ blind_outcome <- tabItem(
 # Attrition ---------------------------------------------------------------
 
 incomplete_outcome <- tabItem(
-  tabName = "incomplete_outcome",
+  tabName = step_ids[[8]],
   h1("Incomplete outcome data"),
   lorem::ipsum(paragraph = 1),
   br(),
@@ -453,7 +453,7 @@ incomplete_outcome <- tabItem(
 # Selective outcome reporting ---------------------------------------------
 
 selective_reporting <- tabItem(
-  tabName = "selective_reporting",
+  tabName = step_ids[[9]],
   h1("Selective outcome reporting"),
   lorem::ipsum(paragraph = 1),
   br(),
@@ -525,7 +525,7 @@ selective_reporting <- tabItem(
 # Other bias --------------------------------------------------------------
 
 funder_influence <- tabItem(
-  tabName = "funder_influence",
+  tabName = step_ids[[10]],
   h1("Inappropriate influence of funders"),
   lorem::ipsum(paragraph = 1),
   br(),
@@ -564,7 +564,7 @@ funder_influence <- tabItem(
 )
 
 analysis_unit <- tabItem(
-  tabName = "analysis_unit",
+  tabName = step_ids[[11]],
   h1("Unit of analysis bias"),
   lorem::ipsum(paragraph = 1),
   br(),
@@ -616,7 +616,7 @@ analysis_unit <- tabItem(
   )
 )
 animal_addition <- tabItem(
-  tabName = "animal_addition",
+  tabName = step_ids[[12]],
   h1("Addition of animals"),
   lorem::ipsum(paragraph = 1),
   br(),
@@ -648,7 +648,14 @@ tool <- tabItem(
   h1("Risk of bias assessment"),
   shiny::fluidPage(
     column(
-      width = 9,
+      width = 1
+    ),
+    column(
+      width = 2,
+      lapply(tool_steps, make_step)
+    ),
+    column(
+      width = 6,
       shinysurveys::surveyOutput(df, 
                                  theme = NULL),
       shinyjs::hidden(
@@ -663,8 +670,7 @@ tool <- tabItem(
         )
       ),
     column(
-      width = 1,
-      # dynamic progress indicator
+      width = 3
       )
     )
   )
@@ -675,11 +681,12 @@ tool <- tabItem(
 plots <- tabItem(
   tabName = "plots",
   h1("Risk of bias plots"),
+  br(),
   fluidRow(
     column(
       width = 6,
       box(
-        title = "Upload data",
+        # title = "Upload data",
         selectInput(
           inputId = "dataformat",
           label = "Select data format",
@@ -740,9 +747,13 @@ plots <- tabItem(
 
 
 
+# training feature --------------------------------------------------------
 
-
-
+practice <- tabItem(
+  tabName = "practice",
+  h1("Test your skills"),
+  lorem::ipsum(paragraphs = 1)
+)
 
 
            
