@@ -1,14 +1,17 @@
-# Load data ---------------------------------------------------------------
+# Source scripts ----------------------------------------------------------
 
 source(here::here("R","helpers.R"))
 source(here::here("R","tabs.R"))
+source(here::here("R","validation.R"))
 
+
+# UI ----------------------------------------------------------------------
 
 header <- dashboardHeader(title = "CAMARADES Risk of Bias Assessment Tool",
                           titleWidth = 450)
 
 sidebar <- dashboardSidebar(
-  width = 320,
+  width = 280,
   sidebarMenu(
     id = "sidebarmenu",
     menuItem(
@@ -145,8 +148,15 @@ body <- dashboardBody(
 
 ui <- dashboardPage(header, sidebar, body)
 
+
+# Server ------------------------------------------------------------------
+
+
 server <- function(input, output, session) {
   
+
+# Gather and clean responses ----------------------------------------------
+
   shinysurveys::renderSurvey()
   
   # aggregate responses to one df
@@ -168,6 +178,9 @@ server <- function(input, output, session) {
       select(response)
   })
   
+
+# Download responses ------------------------------------------------------
+
   # when responses are submitted show Download button and reset input values
   observeEvent(input$submit, {
     shinyjs::show("downloadResponses")
@@ -185,6 +198,8 @@ server <- function(input, output, session) {
       )
   
 
+# Read input file ---------------------------------------------------------
+
   # read in uploaded data
   userdata <- reactive({ 
     req(input$uploadfile) #  require that the input is available
@@ -197,6 +212,9 @@ server <- function(input, output, session) {
   })
   
   
+
+# Plotting ----------------------------------------------------------------
+
   # prepare responses for plotting
   data_plot <- reactive({
     userdata() %>% 
@@ -233,7 +251,9 @@ server <- function(input, output, session) {
       )
     })
   
-  
+
+# Download plots ----------------------------------------------------------
+
   output$downloadPlot <- downloadHandler(
     filename = function() { 
       in_filename <- tools::file_path_sans_ext(input$uploadfile)
@@ -253,7 +273,8 @@ server <- function(input, output, session) {
     }
   )
   
-  # when info box is clicked, go to relevant info tab
+
+# Cross-ref tabs ----------------------------------------------------------
   
   lapply(
     step_ids,
@@ -265,14 +286,156 @@ server <- function(input, output, session) {
     }
   )
   
-  # lapply(title_ids,
-  #        observeEvent(input$title_ids, {
-  #          updateTabItems(session, inputId = "sidebarmenu", selected = "sequence_allocation")
-  #        })
-  #        )
+
+
+# Validation --------------------------------------------------------------
   
+  # get ids of visible questions
+  req_input_ids <- reactive({
+    tool %>%
+    toString %>%
+    read_html %>%
+    html_elements(".questions.dependence") %>%
+    html_attr("id")
+  })
+  
+  observe({
+    
+    # define sections based on visible questions
+    
+    required_df <- df_sections %>% 
+      filter(item_class %in% req_input_ids())
+    
+    sections <- unique(required_df$section)
+    
+    for(section in sections) {
+      assign(paste0(section, "_items"), (required_df[required_df$section == section, "item_class"])$item_class)
+    }
+    
+    # add required items to sections
+    req_items_bysection <- paste0(sections, "_items")
+    
+    # mark section complete with check if all items are answered
+    
+    for(section in req_items_bysection) {
+      
+      is_complete <- all(sapply(section, function(x){isTruthy(input[[x]])}))
+      
+      if(is_complete) {
+        
+        shinyjs::addClass(
+          id = gsub("items","check", section),
+          class = "fa-solid fa-check"
+        )
+      }
+      
+    }
+    
+  })
   
 
+  
+  
+  
+# Validation with shinyvalidate -------------------------------------------
+
+
+ # use input$input_id instead of shinyvalidate?
+  
+  
+ # create shinyvalidate::InputValidators
+  # 
+  # for (s in required_sections) {
+  #   assign(paste0(s, "_iv"), shinyvalidate::InputValidator$new())
+  #   
+  # }
+  
+  # workaround to add rules because mapping/loop does not work
+  # lapply(sequence_allocation_items, 
+  #        function(x) sequence_allocation_iv$add_rule(x, sv_required()))
+  # 
+  # lapply(baseline_characteristics_items, 
+  #        function(x) baseline_characteristics_iv$add_rule(x, sv_required()))
+  # 
+  # lapply(allocation_concealment_items, 
+  #        function(x) allocation_concealment_iv$add_rule(x, sv_required()))
+
+  
+  # observe({
+  #   if (!sequence_allocation_iv$is_valid()) {
+  #     shinyjs::addClass(
+  #       id = "sequence_allocation_check",
+  #       class = "fa-solid fa-exclamation"
+  #       )
+  #     } else if (sequence_allocation_iv$is_valid()) {
+  #       shinyjs::removeClass(
+  #         id = "sequence_allocation_check",
+  #         class = "fa-solid fa-exclamation"
+  #       )
+  #        shinyjs::addClass(
+  #         id = "sequence_allocation_check",
+  #         class = "fa-solid fa-check"
+  #       )
+  #     }
+  #   
+  #   if (!baseline_characteristics_iv$is_valid()) {
+  #     shinyjs::addClass(
+  #       id = "baseline_characteristics_check",
+  #       class = "fa-solid fa-exclamation"
+  #     )
+  #   }  else if (baseline_characteristics_iv$is_valid()) {
+  #     shinyjs::removeClass(
+  #       id = "baseline_characteristics_check",
+  #       class = "fa-solid fa-exclamation"
+  #     )
+  #     shinyjs::addClass(
+  #       id = "baseline_characteristics_check",
+  #       class = "fa-solid fa-check"
+  #     )
+  #   }
+  #   
+  #   if (!allocation_concealment_iv$is_valid()) {
+  #     shinyjs::addClass(
+  #       id = "allocation_concealment_check",
+  #       class = "fa-solid fa-exclamation"
+  #     )
+  #   }  else if (allocation_concealment_iv$is_valid()) {
+  #     shinyjs::removeClass(
+  #       id = "allocation_concealment_check",
+  #       class = "fa-solid fa-exclamation"
+  #     )
+  #     shinyjs::addClass(
+  #       id = "allocation_concealment_check",
+  #       class = "fa-solid fa-check"
+  #     )
+  #   }
+  # })
+  # 
+
+# Reset responses ---------------------------------------------------------
+
+  # start over 
+  observeEvent(input$startover, {
+    
+    shinyalert::shinyalert(
+      title = "",
+      "This will refresh the page and all previous responses will be deleted. Are you sure you want to continue?",
+      animation = FALSE,
+      showCancelButton = TRUE,
+      confirmButtonText = "Start over"
+      )
+    
+    observeEvent(input$shinyalert, {
+      
+      if (input$shinyalert) {
+        session$reload()
+        # and move to tool tab
+        
+      }
+    })
+    
+  })
+  
   # reload session to reset responses
   observeEvent(input$resetResponses, {
     session$reload()

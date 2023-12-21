@@ -193,7 +193,7 @@ allocation_concealment <- tabItem(
   ),
   fluidRow(
     tabBox(
-      title = ("Was the allocation concealment appropriate?"),
+      title = tab_title("Was the allocation concealment appropriate?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -645,14 +645,13 @@ animal_addition <- tabItem(
 
 tool <- tabItem(
   tabName = "tool",
-  h1("Risk of bias assessment"),
+  h2("Risk of bias assessment"),
   shiny::fluidPage(
     column(
-      width = 1
-    ),
-    column(
-      width = 2,
-      lapply(tool_steps, make_step)
+      width = 3,
+      br(),
+      lapply(tool_steps, make_row),
+      actionLink("startover", "Start over")
     ),
     column(
       width = 6,
@@ -708,6 +707,8 @@ plots <- tabItem(
           inputId = "generateplot",
           label = "Generate plot"
         ),
+        br(),
+        br(),
         dropdown(
           right = FALSE,
           animate = FALSE,
