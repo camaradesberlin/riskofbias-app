@@ -648,11 +648,14 @@ tool <- tabItem(
   h2("Risk of bias assessment"),
   shiny::fluidPage(
     column(
-      width = 3,
+      width = 4,
       br(),
       lapply(tool_steps, make_row),
+      br(),
+      br(),
       actionLink("startover", "Start over")
     ),
+    # actionButton("testvalidation","Show dep ids"),
     column(
       width = 6,
       shinysurveys::surveyOutput(df, 

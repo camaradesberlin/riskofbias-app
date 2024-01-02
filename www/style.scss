@@ -29,8 +29,14 @@ $dark: darken($color, 15%);
 
 /* sidebar toggle color */
 
-.skin-blue .main-header .navbar .sidebar:hover {
-  background: #235444;
+.skin-blue .main-header .navbar .sidebar-toggle:hover {
+  color: #fff;
+  background-color: #235444;
+}
+
+.skin-blue .main-header .navbar .sidebar-toggle {
+  background-color: #fff;
+  color: #235444;
 }
 
 /* sidebar color */
@@ -51,6 +57,10 @@ $dark: darken($color, 15%);
 
 .skin-blue .treeview-menu>li>a {
     color: #999;
+}
+
+.sidebar-menu .treeview-menu .treeview-menu {
+    padding-left: 7px;
 }
 
 .skin-blue .sidebar a {
@@ -116,7 +126,7 @@ input[type=text]:focus {
 }
 
 input[type=text] {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   border: none;
   box-shadow: none;
   border-radius: 0;
@@ -128,8 +138,8 @@ input[type=text] {
 }
 
 label {
-  margin-bottom: 10px;
-  font-size: 1.5rem;
+  margin-bottom: 6px;
+  font-size: 1.4rem;
 }
 
 .required {
@@ -176,9 +186,9 @@ label {
 .container-fluid {
 
     .survey {
-      padding: 5px;
-      padding-left: 0%;
-      padding-right: 50%;
+      padding: 0px;
+      padding-left: 5%;
+      padding-right: 0%;
 
       @media (max-width: 1195px) {
         padding-left: 15%;
@@ -261,9 +271,9 @@ label {
 
 .container-fluid .survey .questions .question-input .instructions-only {
     padding: 10px;
-    border: 2px solid #235444;
-    border-radius: 20px;
-    background: #aac3bb;
+    border: 0px;
+    /*border: 2px solid #235444;*/
+    border-radius: 0px;
     
     p {
       color: #444;
@@ -271,5 +281,35 @@ label {
     
     h1, h2, h3 {
       color: #235444;
+      
     }
+}
+
+/* formatting shinydashboard::box */
+.box {
+  border: none;
+  box-shadow: none;
+  margin-bottom: 4px;
+  /* border-bottom: 1px solid #444; */
+  
+  .body {
+    padding: 0px
+  }
+}
+
+.box-body {
+    padding: 1px;
+  }
+  
+ .box-header {
+    padding: 0px;
+  }
+  
+.box-header .box-title {
+    font-size: 13px;
+  }
+  
+.row {
+    margin-right: 0px;
+    margin-left: -30px;
 }

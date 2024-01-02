@@ -290,127 +290,69 @@ server <- function(input, output, session) {
 
 # Validation --------------------------------------------------------------
   
-  # get ids of visible questions
-  req_input_ids <- reactive({
-    tool %>%
-    toString %>%
-    read_html %>%
-    html_elements(".questions.dependence") %>%
-    html_attr("id")
+  # get ids of hidden questions
+  observe({
+    runjs("
+       hiddenDivs = $('.dependence');
+       var hiddenInputIds = [];
+       var i;
+       for (i = 0; i < hiddenDivs.length; i++) {
+       hiddenInputIds[i] = $(hiddenDivs[i]).attr('id');
+       }
+       Shiny.setInputValue('shinysurveysHiddenInputs', hiddenInputIds);
+    ")
+  })
+
+  
+  # define sections based on visible (required) questions
+  required_df <- reactive({
+    df_sections %>% 
+      filter(!input_id %in% input$shinysurveysHiddenInputs)
   })
   
+  # test if code is working
+  # observeEvent(input$testvalidation, {
+  #   print(required_df())
+  # })
+  
+  sections <- unique(df_sections$section)
+
   observe({
     
-    # define sections based on visible questions
-    
-    required_df <- df_sections %>% 
-      filter(item_class %in% req_input_ids())
-    
-    sections <- unique(required_df$section)
-    
-    for(section in sections) {
-      assign(paste0(section, "_items"), (required_df[required_df$section == section, "item_class"])$item_class)
-    }
-    
-    # add required items to sections
-    req_items_bysection <- paste0(sections, "_items")
-    
-    # mark section complete with check if all items are answered
-    
-    for(section in req_items_bysection) {
+  
+    for(i in sections) {
+      itemname <- paste0(i, "_items")
+      assign(itemname, (required_df()[required_df()$section == i, "input_id"])$input_id)
       
-      is_complete <- all(sapply(section, function(x){isTruthy(input[[x]])}))
-      
-      if(is_complete) {
-        
+    
+      is_complete <- all(
+        sapply(
+          eval(parse(text = itemname)), function(x){
+            isTruthy(input[[x]])
+            }
+          )
+      )
+    
+      if(!is_complete) {
+
         shinyjs::addClass(
-          id = gsub("items","check", section),
-          class = "fa-solid fa-check"
+          id = gsub("items","check", itemname),
+          class = "fa-solid fa-exclamation"
         )
+      } else if(is_complete) {
+        shinyjs::removeClass(
+          id = gsub("items","check", itemname),
+          class = "fa-solid fa-exclamation"
+          )
+        shinyjs::addClass(
+          id = gsub("items","check", itemname),
+          class = "fa-solid fa-check"
+          )
       }
-      
+
     }
     
   })
-  
-
-  
-  
-  
-# Validation with shinyvalidate -------------------------------------------
-
-
- # use input$input_id instead of shinyvalidate?
-  
-  
- # create shinyvalidate::InputValidators
-  # 
-  # for (s in required_sections) {
-  #   assign(paste0(s, "_iv"), shinyvalidate::InputValidator$new())
-  #   
-  # }
-  
-  # workaround to add rules because mapping/loop does not work
-  # lapply(sequence_allocation_items, 
-  #        function(x) sequence_allocation_iv$add_rule(x, sv_required()))
-  # 
-  # lapply(baseline_characteristics_items, 
-  #        function(x) baseline_characteristics_iv$add_rule(x, sv_required()))
-  # 
-  # lapply(allocation_concealment_items, 
-  #        function(x) allocation_concealment_iv$add_rule(x, sv_required()))
-
-  
-  # observe({
-  #   if (!sequence_allocation_iv$is_valid()) {
-  #     shinyjs::addClass(
-  #       id = "sequence_allocation_check",
-  #       class = "fa-solid fa-exclamation"
-  #       )
-  #     } else if (sequence_allocation_iv$is_valid()) {
-  #       shinyjs::removeClass(
-  #         id = "sequence_allocation_check",
-  #         class = "fa-solid fa-exclamation"
-  #       )
-  #        shinyjs::addClass(
-  #         id = "sequence_allocation_check",
-  #         class = "fa-solid fa-check"
-  #       )
-  #     }
-  #   
-  #   if (!baseline_characteristics_iv$is_valid()) {
-  #     shinyjs::addClass(
-  #       id = "baseline_characteristics_check",
-  #       class = "fa-solid fa-exclamation"
-  #     )
-  #   }  else if (baseline_characteristics_iv$is_valid()) {
-  #     shinyjs::removeClass(
-  #       id = "baseline_characteristics_check",
-  #       class = "fa-solid fa-exclamation"
-  #     )
-  #     shinyjs::addClass(
-  #       id = "baseline_characteristics_check",
-  #       class = "fa-solid fa-check"
-  #     )
-  #   }
-  #   
-  #   if (!allocation_concealment_iv$is_valid()) {
-  #     shinyjs::addClass(
-  #       id = "allocation_concealment_check",
-  #       class = "fa-solid fa-exclamation"
-  #     )
-  #   }  else if (allocation_concealment_iv$is_valid()) {
-  #     shinyjs::removeClass(
-  #       id = "allocation_concealment_check",
-  #       class = "fa-solid fa-exclamation"
-  #     )
-  #     shinyjs::addClass(
-  #       id = "allocation_concealment_check",
-  #       class = "fa-solid fa-check"
-  #     )
-  #   }
-  # })
-  # 
 
 # Reset responses ---------------------------------------------------------
 

@@ -10,9 +10,12 @@ library(data.table)
 library(robvis)
 library(shinyWidgets)
 library(sass)
+library(shinyvalidate)
+library(htmltools)
+library(rvest)
+library(magrittr)
 # library(dashboardthemes)
 # library(semantic.dashboard)
-
 
 # Helper functions --------------------------------------------------------
 
@@ -56,7 +59,7 @@ tool_steps <-
 
 # create item (box in a row) to track progress during the rob assessment
 
-make_step <- function(step) {
+make_row <- function(step) {
   
   step_id <- step %>% 
     {gsub("[[:digit:]]+", "", .)} %>% 
@@ -66,21 +69,43 @@ make_step <- function(step) {
   
   box_id <- paste0(step_id, "_step")
   title_id <- paste0(step_id, "_title")
+  check_id <- paste0(step_id, "_check")
+  # 
+  # fluidRow(
+  #   div(
+  #     id = box_id,
+  #     box(
+  #       title = actionLink(
+  #         title_id,
+  #         span(icon("exclamation", style = "color: #333"), step)
+  #         ),
+  #       width = "100%"
+  #       )
+  #     )
+  #   )
   
-    div(
-      id = box_id,
-      fluidRow(
+  fluidRow(
+    column(
+      width = 1,
+      div(
+        id = check_id
+      )
+    ),
+    column(
+      width = 11,
+      div(
+        id = box_id,
         box(
           title = actionLink(title_id, step),
           width = "100%"
-          )
         )
       )
+    )
+  )
+
 }
 
-
-# test <- lapply(tool_steps, make_step)
-
+# move above and take out of previous function?
 step_ids <- tool_steps %>% 
   {gsub("[[:digit:]]+", "", .)} %>% 
   {gsub("\\. ", "", .)} %>% 
@@ -88,14 +113,10 @@ step_ids <- tool_steps %>%
   {tolower(.)}
 
 title_ids <- paste0(step_ids, "_title")
+check_ids <- paste0(step_ids, "title")
 
 
 # Custom theme ------------------------------------------------------------
-
-# sass::sass(
-#   sass_file(here::here("www","style.scss")),
-#   output = here::here("www", "style.css")
-# )
 
 mystyle <- sass::sass(
   list(
@@ -109,10 +130,6 @@ mystyle <- sass::sass(
     )
   )
 
-
-
-
-# includeCSS("www/style.css")
 
 # Data for survey structure -----------------------------------------------
 
@@ -447,11 +464,54 @@ df <- rbind(metadata,
   arrange(page) %>%
   mutate_all(as.character)
 
+# Validation --------------------------------------------------------------
+
+# get required questions from survey df
+df_sections <- df %>% 
+  filter(required %in% TRUE) %>% 
+  select(input_id, page) %>% 
+  unique() %>% 
+  mutate(section = case_when(page %in% "1" ~ "metadata",
+                             page %in% "2" ~ step_ids[[1]],
+                             page %in% "3" ~ step_ids[[2]],
+                             page %in% "4" ~ step_ids[[3]],
+                             page %in% "5" ~ step_ids[[4]],
+                             page %in% "6" ~ step_ids[[5]],
+                             page %in% "7" ~ step_ids[[6]],
+                             page %in% "8" ~ step_ids[[7]],
+                             page %in% "9" ~ step_ids[[8]],
+                             page %in% "10" ~ step_ids[[9]],
+                             page %in% "11" ~ step_ids[[10]],
+                             page %in% "12" ~ step_ids[[11]],
+                             page %in% "13" ~ step_ids[[12]])) %>% 
+  mutate(item_iv = paste0(input_id, "_iv")) %>% 
+  mutate(section_iv = paste0(section, "_iv")) %>% 
+  mutate(item_class = paste0(input_id, "-question"))
+
+
+# need one function to check if all inputs were answered
+
+# need the function to check all inputs of one section were answered
+
+
+# observe() dependencies to update which input is required
+
+# get list of all items
+
+
+# <div class="questions" id="added_animals_tool-question">
+  
+
+
+# check if input is provided for all applicable questions
+# show sections as complete if all items were answered
+
+
 
 # Clean responses ---------------------------------------------------------
 
-# outcomes <- fread(here::here("outcomes.csv"), header = T, na.strings = c("")) %>%
-#   select(bias_type, response, outcome)
+outcomes <- fread(here::here("outcomes.csv"), header = T, na.strings = c("")) %>%
+  select(bias_type, response, outcome)
 
 # clean survey responses into tidy format
 tidy_responses <- function(responses){
