@@ -12,7 +12,7 @@ $dark: darken($color, 15%);
 .skin-blue .main-header .logo {
   background-color: #fff;
   color: #235444;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Arial', sans-serif;
   font-weight: bold;
 }
 
@@ -72,12 +72,12 @@ $dark: darken($color, 15%);
 }
 
 body {
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Arial', sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
 	color: #333;
-	font-family: 'Montserrat', sans-serif;
+	font-family: 'Arial', sans-serif;
 }
 
 h1, h2, h3 {
@@ -100,19 +100,19 @@ h1 {
 
 h3 {
 	font-style: normal;
-	font-family: 'Montserrat', sans-serif;
+	font-family: 'Arial', sans-serif;
 }
 
 h4 {
   font-weight: bold;
-	font-family: 'Montserrat', sans-serif;
+	font-family: 'Arial', sans-serif;
 }
 
 p {
 	color: #333;
 	margin: 0px;
 	margin-bottom: 10px;
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Arial', sans-serif;
 }
 
 li.l {
@@ -323,6 +323,26 @@ label {
 }
 
 .unclear-bias {
-  /*color: #ffd43b;*/
-  color: yellow;
+  color: #ffd43b;
+}
+
+.high-bias::before {
+  content: "High";
+  font-size: 12px;
+  display: inline-block;
+  font-weight: bold;
+}
+
+.low-bias::before {
+  content: "Low";
+  font-size: 12px;
+  display: inline-block;
+  font-weight: bold;
+}
+
+.unclear-bias::before {
+  content: "Unclear";
+  font-size: 12px;
+  display: inline-block;
+  font-weight: bold;
 }

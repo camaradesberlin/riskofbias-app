@@ -93,7 +93,7 @@ make_row <- function(step) {
       )
     ),
     column(
-      width = 10,
+      width = 9,
       div(
         id = box_id,
         box(
@@ -103,11 +103,11 @@ make_row <- function(step) {
       )
     ),
     column(
-      width = 1,
+      width = 2,
       shinyjs::hidden(
         div(
-        id = outcome_id,
-        HTML('<i class="fa-solid fa-circle"></i>'),
+        id = outcome_id
+        # HTML('<i class="fa-solid fa-circle"></i>')
         )
       )
     )
