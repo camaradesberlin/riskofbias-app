@@ -70,6 +70,7 @@ make_row <- function(step) {
   box_id <- paste0(step_id, "_step")
   title_id <- paste0(step_id, "_title")
   check_id <- paste0(step_id, "_check")
+  outcome_id <- paste0(step_id, "_outcome_sign")
   # 
   # fluidRow(
   #   div(
@@ -92,12 +93,21 @@ make_row <- function(step) {
       )
     ),
     column(
-      width = 11,
+      width = 10,
       div(
         id = box_id,
         box(
           title = actionLink(title_id, step),
           width = "100%"
+        )
+      )
+    ),
+    column(
+      width = 1,
+      shinyjs::hidden(
+        div(
+        id = outcome_id,
+        HTML('<i class="fa-solid fa-circle"></i>'),
         )
       )
     )
@@ -489,25 +499,6 @@ df_sections <- df %>%
   mutate(item_class = paste0(input_id, "-question"))
 
 
-# need one function to check if all inputs were answered
-
-# need the function to check all inputs of one section were answered
-
-
-# observe() dependencies to update which input is required
-
-# get list of all items
-
-
-# <div class="questions" id="added_animals_tool-question">
-  
-
-
-# check if input is provided for all applicable questions
-# show sections as complete if all items were answered
-
-
-
 # Clean responses ---------------------------------------------------------
 
 outcomes <- fread(here::here("outcomes.csv"), header = T, na.strings = c("")) %>%
@@ -539,3 +530,17 @@ prepare_robvis <- function(dat){
 # test_responses_multi <- fread("test_responses_multi.csv") %>% prepare_robvis()
 
 # robvis::rob_summary(test_responses_multi, tool = "Generic")
+
+# Show outcomes in app ----------------------------------------------------
+
+outcomes_app <- outcomes %>% 
+  separate(response, into = c("input_id", "response"), sep = "\\.") %>% 
+  left_join(
+    (df_sections %>% 
+      select(input_id, section)
+    ), by = "input_id"
+  ) %>% 
+  mutate(input_response = interaction(input_id, response)) %>% 
+  select(-c(bias_type, input_id, response))
+  
+  

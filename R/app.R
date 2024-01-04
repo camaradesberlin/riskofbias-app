@@ -154,11 +154,11 @@ ui <- dashboardPage(header, sidebar, body)
 
 server <- function(input, output, session) {
   
+  # render survey
+  shinysurveys::renderSurvey()
 
 # Gather and clean responses ----------------------------------------------
 
-  shinysurveys::renderSurvey()
-  
   # aggregate responses to one df
   response_data <- eventReactive(input$submit, {
     shinysurveys::getSurveyData()
@@ -181,10 +181,9 @@ server <- function(input, output, session) {
 
 # Download responses ------------------------------------------------------
 
-  # when responses are submitted show Download button and reset input values
+  # when responses are submitted allow Download button
   observeEvent(input$submit, {
     shinyjs::show("downloadResponses")
-    shinyjs::show("resetResponses")
   })
   
   # download responses (csv file)
@@ -310,49 +309,141 @@ server <- function(input, output, session) {
       filter(!input_id %in% input$shinysurveysHiddenInputs)
   })
   
-  # test if code is working
-  # observeEvent(input$testvalidation, {
-  #   print(required_df())
-  # })
-  
   sections <- unique(df_sections$section)
+  
 
   observe({
     
-  
+    # create dfs assigning items to sections
     for(i in sections) {
       itemname <- paste0(i, "_items")
       assign(itemname, (required_df()[required_df()$section == i, "input_id"])$input_id)
       
-    
+    # evaluate if all section input is there
       is_complete <- all(
         sapply(
           eval(parse(text = itemname)), function(x){
             isTruthy(input[[x]])
             }
           )
-      )
-    
-      if(!is_complete) {
-
-        shinyjs::addClass(
-          id = gsub("items","check", itemname),
-          class = "fa-solid fa-exclamation"
         )
-      } else if(is_complete) {
-        shinyjs::removeClass(
+      # conditionally show exclamation or check mark
+      if(!is_complete) {
+        shinyjs::addClass(
           id = gsub("items","check", itemname),
           class = "fa-solid fa-exclamation"
           )
-        shinyjs::addClass(
-          id = gsub("items","check", itemname),
-          class = "fa-solid fa-check"
+        } else if(is_complete) {
+          shinyjs::removeClass(
+            id = gsub("items","check", itemname),
+            class = "fa-solid fa-exclamation"
+            )
+          shinyjs::addClass(
+            id = gsub("items","check", itemname),
+            class = "fa-solid fa-check"
           )
+        }
       }
+    })
 
+
+# RoB outcomes ------------------------------------------------------------
+
+  rob_outcomes <- reactive({
+    input_df <- NULL
+    df_row <- NULL
+    # gather all user inputs from app
+    for(i in 1:length(names(input))){
+      df_row <- as.data.frame(cbind(names(input)[i], input[[names(input)[i]]]))
+      input_df <- as.data.frame(dplyr::bind_rows(input_df, df_row))
     }
+    names(input_df) <- c("input_id", "input_val")
     
+    # format input df so outcome can be extracted
+    input_df <- input_df %>% 
+      mutate(input_response = interaction(input_id, input_val)) %>% 
+      filter(str_detect(input_id, "tool")) %>% 
+      left_join(outcomes_app, by = "input_response") %>% 
+      filter(!is.na(outcome)) %>% 
+      group_by(section) %>% 
+      slice(1)
+    input_df
   })
+  
+  observe({
+
+    for(i in sections) {
+
+      varname <- paste0(i, "_outcome")
+      varname_id <- paste0(varname, "_sign")
+      assign(varname, (rob_outcomes()[rob_outcomes()$section == i, "outcome"])$outcome)
+      outcome <- as.character(eval(parse(text = varname)))
+      
+      is_high <- ifelse(outcome == "High", TRUE, FALSE)
+      is_unclear <- ifelse(outcome == "Unclear", TRUE, FALSE)
+      is_low <- ifelse(outcome == "Low", TRUE, FALSE)
+      
+      if(nrow(rob_outcomes()) > 0) {
+        if(isTRUE(is_high)) {
+          shinyjs::show(
+            id = varname_id
+            )
+          shinyjs::removeClass(
+            id = varname_id,
+            class = "low-bias"
+          )
+          shinyjs::removeClass(
+            id = varname_id,
+            class = "unclear-bias"
+          )
+          shinyjs::addClass(
+            id = varname_id,
+            class = "high-bias"
+            )
+        } else if(isTRUE(is_unclear)) {
+          shinyjs::show(
+            id = varname_id
+          )
+          shinyjs::removeClass(
+            id = varname_id,
+            class = "low-bias"
+          )
+          shinyjs::removeClass(
+            id = varname_id,
+            class = "high-bias"
+          )
+          shinyjs::addClass(
+            id = varname_id,
+            class = "unclear-bias"
+          )
+        } else if(isTRUE(is_low)) {
+          shinyjs::show(
+            id = varname_id
+          )
+          shinyjs::removeClass(
+            id = varname_id,
+            class = "high-bias"
+          )
+          shinyjs::removeClass(
+            id = varname_id,
+            class = "unclear-bias"
+          )
+          shinyjs::addClass(
+            id = varname_id,
+            class = "low-bias"
+          )
+        }
+      }
+      
+    }
+  
+  })
+
+  # observeEvent(input$testbutton, {
+  # 
+  #   print(nrow(rob_outcomes()))
+  # 
+  # })
 
 # Reset responses ---------------------------------------------------------
 
@@ -376,11 +467,6 @@ server <- function(input, output, session) {
       }
     })
     
-  })
-  
-  # reload session to reset responses
-  observeEvent(input$resetResponses, {
-    session$reload()
   })
   
 }
