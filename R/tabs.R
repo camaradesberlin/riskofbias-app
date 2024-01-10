@@ -655,7 +655,6 @@ tool <- tabItem(
       br(),
       actionLink("startover", "Start over")
     ),
-    actionButton("testbutton","Test show"),
     column(
       width = 6,
       shinysurveys::surveyOutput(df, 

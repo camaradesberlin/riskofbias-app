@@ -414,13 +414,6 @@ server <- function(input, output, session) {
     all_inputs_df
   })
   
-  observeEvent(input$testbutton, {
-    
-    print(rob_outcomes())
-    
-  })
-  
-  
   observe({
 
     for(i in sections) {
