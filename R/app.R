@@ -203,11 +203,24 @@ server <- function(input, output, session) {
     
     inFile <- input$uploadfile 
     
-    df <- read.csv(inFile$datapath, sep = ",")
+    # read user provided file if only one is provided
+    if (length(inFile$name) == 1)
+      df <- read.csv(inFile$datapath, sep = ",")
+    # if multiple files, read and concatenate into one df
+    else if(length(inFile$name) > 1) {
+      paths <- inFile$datapath
+      df <- do.call(
+        rbind, 
+        lapply(paths, function(f) {
+          read.csv(f, sep = ",")
+        })
+      )
+    }
     
     return(df)
   })
   
+  # observe(print(userdata()))
   
 
 # Plotting ----------------------------------------------------------------

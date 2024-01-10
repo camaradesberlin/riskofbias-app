@@ -694,7 +694,8 @@ plots <- tabItem(
         fileInput(
           inputId = "uploadfile", 
           label = "Upload csv file",
-          accept = c(".csv")
+          accept = c(".csv"),
+          multiple = TRUE
         ),
         selectInput(
           inputId = "showPlotType",
