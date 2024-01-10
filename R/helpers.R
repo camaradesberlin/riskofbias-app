@@ -501,7 +501,7 @@ df_sections <- df %>%
 
 # Clean responses ---------------------------------------------------------
 
-outcomes <- fread(here::here("outcomes.csv"), header = T, na.strings = c("")) %>%
+outcomes <- fread(here::here("data","outcomes.csv"), header = T, na.strings = c("")) %>%
   select(bias_type, response, outcome)
 
 # clean survey responses into tidy format
@@ -523,13 +523,19 @@ prepare_robvis <- function(dat){
   dat <- dat %>% 
     select(study_id, bias_type, outcome) %>% 
     group_by(study_id) %>% 
-    pivot_wider(names_from = bias_type, values_from = outcome)
+    pivot_wider(names_from = bias_type, values_from = outcome) %>% 
+    rename_with(~gsub("_"," ", .) %>% str_to_title(.), -1)
   return(dat)
 }
 
-# test_responses_multi <- fread("test_responses_multi.csv") %>% prepare_robvis()
+# test_responses <- fread("mystudy_RoB_2024-01-10.csv", header = T) %>%
+#   prepare_robvis()
 
-# robvis::rob_summary(test_responses_multi, tool = "Generic")
+
+# robvis::rob_traffic_light(test_responses_multi,
+#                           tool = "Generic",
+#                           overall = FALSE,
+#                           colour = "colourblind")
 
 # Show outcomes in app ----------------------------------------------------
 

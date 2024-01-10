@@ -4,7 +4,6 @@ source(here::here("R","helpers.R"))
 source(here::here("R","tabs.R"))
 source(here::here("R","validation.R"))
 
-
 # UI ----------------------------------------------------------------------
 
 header <- dashboardHeader(title = "CAMARADES Risk of Bias Assessment Tool",
@@ -151,7 +150,6 @@ ui <- dashboardPage(header, sidebar, body)
 
 # Server ------------------------------------------------------------------
 
-
 server <- function(input, output, session) {
   
   # render survey
@@ -220,15 +218,29 @@ server <- function(input, output, session) {
       prepare_robvis()
   })
   
-  
+  # include option for color blind friendly
+  plotcolor <- reactive({
+    if (input$showColorBlind)
+      plotcolor = "colourblind"
+    else if(!input$showColorBlind)
+      plotcolor = "cochrane"
+  })
+
   # generate plot
   observeEvent(input$generateplot, {
+
     output$robplot <- renderPlot({
       if (input$showPlotType == "Traffic light plot"){
-        robvis::rob_traffic_light(data_plot(), tool = "Generic")
+        robvis::rob_traffic_light(data_plot(), 
+                                  tool = "Generic",
+                                  overall = FALSE, 
+                                  colour = plotcolor())
       }
       else if (input$showPlotType == "Summary plot"){
-        robvis::rob_summary(data_plot(), tool = "Generic")
+        robvis::rob_summary(data_plot(), 
+                            tool = "Generic",
+                            overall = FALSE,
+                            colour = plotcolor())
       } 
     })
   })
@@ -250,6 +262,12 @@ server <- function(input, output, session) {
       )
     })
   
+  savePlotColor <- reactive({
+    if (input$saveColorBlind)
+      plotcolor = "colourblind"
+    else if(!input$showColorBlind)
+      plotcolor = "cochrane"
+  })
 
 # Download plots ----------------------------------------------------------
 
@@ -260,12 +278,18 @@ server <- function(input, output, session) {
       },
     content = function(file) {
       if (input$savePlotType == "Traffic light") {
-        p_traffic <- robvis::rob_traffic_light(data_plot(), tool = "Generic")
+        p_traffic <- robvis::rob_traffic_light(data_plot(), 
+                                               tool = "Generic",
+                                               overall = FALSE,
+                                               colour = savePlotColor())
         ggsave(file, plot = p_traffic, device = plot.format())
       }
       
       else if (input$savePlotType == "Summary") {
-        p_summary <- robvis::rob_summary(data_plot(), tool = "Generic")
+        p_summary <- robvis::rob_summary(data_plot(), 
+                                         tool = "Generic",
+                                         overall = FALSE,
+                                         colour = savePlotColor())
         ggsave(file, plot = p_summary, device = plot.format())
         
       }
@@ -311,7 +335,6 @@ server <- function(input, output, session) {
   
   sections <- unique(df_sections$section)
   
-
   observe({
     
     # create dfs assigning items to sections

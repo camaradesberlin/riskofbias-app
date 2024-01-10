@@ -655,19 +655,15 @@ tool <- tabItem(
       br(),
       actionLink("startover", "Start over")
     ),
-    # actionButton("testvalidation","Show dep ids"),
+    actionButton("testbutton","Test show"),
     column(
       width = 6,
       shinysurveys::surveyOutput(df, 
                                  theme = NULL),
+      br(),
       shinyjs::hidden(
         downloadButton(
           "downloadResponses","Download responses"
-          )
-        ),
-      shinyjs::hidden(
-        actionButton(
-          "resetResponses","Reset responses"
           )
         )
       ),
@@ -686,7 +682,7 @@ plots <- tabItem(
   br(),
   fluidRow(
     column(
-      width = 6,
+      width = 5,
       box(
         # title = "Upload data",
         selectInput(
@@ -705,6 +701,10 @@ plots <- tabItem(
           label = "Select type of plot",
           choices = list("Traffic light plot", "Summary plot"),
           selected = character(0)
+        ),
+        checkboxInput(
+          inputId = "showColorBlind",
+          label = "Color blind friendly"
         ),
         actionButton(
           inputId = "generateplot",
@@ -730,6 +730,10 @@ plots <- tabItem(
             multiple = FALSE,
             selected = ".png",
             width = "auto"
+          ),
+          checkboxInput(
+            inputId = "saveColorBlind",
+            label = "Color blind friendly"
           ),
           br(),
           br(),
