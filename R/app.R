@@ -350,25 +350,40 @@ server <- function(input, output, session) {
 # RoB outcomes ------------------------------------------------------------
 
   rob_outcomes <- reactive({
-    input_df <- NULL
+    all_inputs <- NULL
     df_row <- NULL
-    # gather all user inputs from app
-    for(i in 1:length(names(input))){
-      df_row <- as.data.frame(cbind(names(input)[i], input[[names(input)[i]]]))
-      input_df <- as.data.frame(dplyr::bind_rows(input_df, df_row))
-    }
-    names(input_df) <- c("input_id", "input_val")
+
+    # exclude upload file from inputs
+    id_exclude <- c("uploadfile")
+    id_include <- setdiff(names(input), id_exclude)
     
-    # format input df so outcome can be extracted
-    input_df <- input_df %>% 
+    # loop through list of inputs and create a reactive df
+
+    for(i in 1:length(id_include)) {
+      df_row <- as.data.frame(cbind(id_include[i], input[[id_include[i]]]))
+      all_inputs <- as.data.frame(dplyr::bind_rows(all_inputs, df_row))
+    }
+    names(all_inputs) <- c("input_id", "input_val")
+
+    # format df so outcome can be extracted
+    all_inputs_df <- all_inputs %>%
+      as_tibble() %>% 
       mutate(input_response = interaction(input_id, input_val)) %>% 
+      mutate(input_response = as.character(input_response)) %>% 
       filter(str_detect(input_id, "tool")) %>% 
-      left_join(outcomes_app, by = "input_response") %>% 
-      filter(!is.na(outcome)) %>% 
-      group_by(section) %>% 
+      left_join(outcomes_app, by = "input_response") %>% # join with outcomes df
+      filter(!is.na(outcome)) %>%
+      group_by(section) %>%
       slice(1)
-    input_df
+    all_inputs_df
   })
+  
+  observeEvent(input$testbutton, {
+    
+    print(rob_outcomes())
+    
+  })
+  
   
   observe({
 
@@ -376,13 +391,15 @@ server <- function(input, output, session) {
 
       varname <- paste0(i, "_outcome")
       varname_id <- paste0(varname, "_sign")
+      # assign value (low, high, unclear) to user input values
       assign(varname, (rob_outcomes()[rob_outcomes()$section == i, "outcome"])$outcome)
       outcome <- as.character(eval(parse(text = varname)))
-      
+
+      # define conditions for showing outcome
       is_high <- ifelse(outcome == "High", TRUE, FALSE)
       is_unclear <- ifelse(outcome == "Unclear", TRUE, FALSE)
       is_low <- ifelse(outcome == "Low", TRUE, FALSE)
-      
+
       if(nrow(rob_outcomes()) > 0) {
         if(isTRUE(is_high)) {
           shinyjs::show(
@@ -434,16 +451,12 @@ server <- function(input, output, session) {
           )
         }
       }
-      
+
     }
-  
+
   })
 
-  # observeEvent(input$testbutton, {
-  # 
-  #   print(nrow(rob_outcomes()))
-  # 
-  # })
+
 
 # Reset responses ---------------------------------------------------------
 
