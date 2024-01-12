@@ -1,37 +1,32 @@
 # Libraries ---------------------------------------------------------------
 
-library(shiny)
-library(tidyverse)
-library(shinydashboard)
-library(shinyjs)
-library(bslib)
-library(shinysurveys)
-library(data.table)
-library(robvis)
-library(shinyWidgets)
-library(sass)
-library(shinyvalidate)
-library(htmltools)
-library(rvest)
-library(magrittr)
-# library(dashboardthemes)
-# library(semantic.dashboard)
+pkgs <- function(...) {
+  libs <- unlist(list(...))
+  req <- unlist(lapply(libs, require, character.only = TRUE))
+  need <- libs[req == FALSE]
+  if(length(need) > 0) { 
+    install.packages(need)
+    lapply(need, require, character.only = TRUE)
+  }
+}
+
+pkgs(c("shiny",
+        "shinydashboard",
+        "shinyjs",
+        "shinysurveys",
+        "shinyWidgets",
+        "shinyvalidate",
+        "bslib",
+        "tidyverse",
+        "data.table",
+        "htmltools",
+        "sass",
+        "robvis",
+        "magrittr",
+        "rvest"))
+
 
 # Helper functions --------------------------------------------------------
-
-# display debugging messages in R (if local) 
-# and in the console log (if running in shiny)
-# debug_msg <- function(...) {
-#   is_local <- Sys.getenv('SHINY_PORT') == ""
-#   in_shiny <- !is.null(shiny::getDefaultReactiveDomain())
-#   txt <- toString(list(...))
-#   if (is_local) message(txt)
-#   if (in_shiny) shinyjs::runjs(sprintf("console.debug(\"%s\")", txt))
-# }
-# 
-# debug_sprintf <- function(fmt, ...) {
-#   debug_msg(sprintf(fmt, ...))
-# }
 
 # display tab box titles after tabs
 
@@ -528,14 +523,6 @@ prepare_robvis <- function(dat){
   return(dat)
 }
 
-# test_responses <- fread("mystudy_RoB_2024-01-10.csv", header = T) %>%
-#   prepare_robvis()
-
-
-# robvis::rob_traffic_light(test_responses_multi,
-#                           tool = "Generic",
-#                           overall = FALSE,
-#                           colour = "colourblind")
 
 # Show outcomes in app ----------------------------------------------------
 
