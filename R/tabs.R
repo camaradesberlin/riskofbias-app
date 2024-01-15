@@ -27,7 +27,7 @@ sequence_allocation <- tabItem(
   br(),
   fluidRow(
     tabBox(
-      title = tab_title("Did the authors compare two cohorts of the same genetic model?"),
+      title = "Did the authors compare two cohorts of the same genetic model?",
       width = 6,
       side = "right",
       selected = "Description",
@@ -41,7 +41,7 @@ sequence_allocation <- tabItem(
       )
     ),
     tabBox(
-      title = tab_title("Do the authors report random allocation to group?"),
+      title = "Do the authors report random allocation to group?",
       width = 6,
       side = "right",
       selected = "Description",
@@ -118,7 +118,7 @@ baseline_characteristics <- tabItem(
       )
     ),
     tabBox(
-      title = tab_title("Are the groups similar at baseline with respect to age, sex and weight?"),
+      title = ("Are the groups similar at baseline with respect to age, sex and weight?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -134,7 +134,7 @@ baseline_characteristics <- tabItem(
   ),
   fluidRow(
     tabBox(
-      title = tab_title("Did the authors adjust the statistical analyses for confounders?"),
+      title = ("Did the authors adjust the statistical analyses for confounders?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -163,7 +163,7 @@ allocation_concealment <- tabItem(
   br(),
   fluidRow(
     tabBox(
-      title = tab_title("Was the allocation (randomization) procedure described in the methods?"),
+      title = ("Was the allocation (randomization) procedure described in the methods?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -235,7 +235,7 @@ random_housing <- tabItem(
       )
     ),
     tabBox(
-      title = tab_title("Were cages placed randomly within the housing facility?"),
+      title = ("Were cages placed randomly within the housing facility?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -278,7 +278,7 @@ blinded_conduct <- tabItem(
       )
     ),
     tabBox(
-      title = tab_title("Is the method of blinding described appropriate?"),
+      title = ("Is the method of blinding described appropriate?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -320,7 +320,7 @@ random_outcome <- tabItem(
       )
     ),
     tabBox(
-      title = tab_title("Is the method of randomization described appropriate?"),
+      title = ("Is the method of randomization described appropriate?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -362,7 +362,7 @@ blind_outcome <- tabItem(
       )
     ),
     tabBox(
-      title = tab_title("Is the method of blinding described appropriate?"),
+      title = ("Is the method of blinding described appropriate?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -389,7 +389,7 @@ incomplete_outcome <- tabItem(
   br(),
   fluidRow(
     tabBox(
-      title = tab_title("Is there a section specifically describing drop-outs or mortality?"),
+      title = space_after("Is there a section specifically describing drop-outs or mortality?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -433,7 +433,7 @@ incomplete_outcome <- tabItem(
       )
     ),
     tabBox(
-      title = tab_title("Were missing data imputed using appropriate statistical methods?"),
+      title = space_after("Were missing data imputed using appropriate statistical methods?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -461,7 +461,7 @@ selective_reporting <- tabItem(
   br(),
   fluidRow(
     tabBox(
-      title = ("Was the study protocol available and published prior to the study results?"),
+      title = ("Was the study protocol available and published prior to the study results? "),
       width = 6,
       side = "right",
       selected = "Description",
@@ -572,7 +572,7 @@ analysis_unit <- tabItem(
   br(),
   fluidRow(
     tabBox(
-      title = tab_title("Were treatments given dissolved in either food or drinking water?"),
+      title = ("Were treatments given dissolved in either food or drinking water?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -598,7 +598,9 @@ analysis_unit <- tabItem(
         "Description",
         lorem::ipsum(paragraphs = 1)
       )
-    ),
+    )
+  ),
+  fluidRow(
     tabBox(
       title = "Were cages (not individual animals) compared statistically as the unit of analysis?",
       width = 6,
@@ -679,77 +681,87 @@ plots <- tabItem(
   tabName = "plots",
   h1("Risk of bias plots"),
   br(),
-  fluidRow(
-    column(
-      width = 5,
-      box(
-        # title = "Upload data",
-        selectInput(
-          inputId = "dataformat",
-          label = "Select data format",
-          choices = list("app","SyRF"),
-          selected = character(0)
+  column(
+    width = 4,
+    box(
+      width = 12,
+      # title = "Upload data",
+      selectInput(
+        inputId = "dataformat",
+        label = "Select data format",
+        choices = list("app"),
+        # choices = list("app","SyRF"),
+        selected = character(0)
+      ),
+      fileInput(
+        inputId = "uploadfile", 
+        label = "Upload csv file",
+        accept = c(".csv"),
+        multiple = TRUE
+      ),
+      uiOutput(
+          "datamessage"
           ),
-        fileInput(
-          inputId = "uploadfile", 
-          label = "Upload csv file",
-          accept = c(".csv"),
-          multiple = TRUE
+      br(),
+      selectInput(
+        inputId = "showPlotType",
+        label = "Select type of plot",
+        choices = list("Traffic light plot", "Summary plot"),
+        selected = character(0)
+      ),
+      checkboxInput(
+        inputId = "showColorBlind",
+        label = "Color blind friendly"
+      ),
+      actionButton(
+        inputId = "generateplot",
+        label = "Generate plot"
+      ),
+      br(),
+      br(),
+      dropdown(
+        right = FALSE,
+        animate = FALSE,
+        selectInput(
+          inputId = "savePlotType",
+          label = "Select type of plot output",
+          choices = c("Traffic light", "Summary"),
+          multiple = FALSE,
+          selected = "Traffic light",
+          width = "auto"
         ),
         selectInput(
-          inputId = "showPlotType",
-          label = "Select type of plot",
-          choices = list("Traffic light plot", "Summary plot"),
-          selected = character(0)
+          inputId = "formatplot",
+          label = "Select format of plot output",
+          choices = list("png","pdf","tiff"),
+          multiple = FALSE,
+          selected = ".png",
+          width = "auto"
         ),
         checkboxInput(
-          inputId = "showColorBlind",
+          inputId = "saveColorBlind",
           label = "Color blind friendly"
         ),
-        actionButton(
-          inputId = "generateplot",
-          label = "Generate plot"
-        ),
         br(),
         br(),
-        dropdown(
-          right = FALSE,
-          animate = FALSE,
-          selectInput(
-            inputId = "savePlotType",
-            label = "Select type of plot output",
-            choices = c("Traffic light", "Summary"),
-            multiple = FALSE,
-            selected = "Traffic light",
-            width = "auto"
-          ),
-          selectInput(
-            inputId = "formatplot",
-            label = "Select format of plot output",
-            choices = list("png","pdf","tiff"),
-            multiple = FALSE,
-            selected = ".png",
-            width = "auto"
-          ),
-          checkboxInput(
-            inputId = "saveColorBlind",
-            label = "Color blind friendly"
-          ),
-          br(),
-          br(),
-          downloadButton('downloadPlot','Save'),
-          # icon = icon("file-alt"),
-          up = FALSE,
-          label = "Save plot",
-          size = "default",
-          inputId = "saveplot"
-        )
+        downloadButton('downloadPlot','Save'),
+        # icon = icon("file-alt"),
+        up = FALSE,
+        label = "Save plot",
+        size = "default",
+        inputId = "saveplot"
+      ),
+      br(),
+      actionButton(
+        inputId = "helpUpload",
+        label = "Help",
+        icon = icon("info-circle")
       )
-    ),
-    column(
-      width = 6,
-        plotOutput("robplot")
-      )
+    )
+  ),
+  column(
+    width = 6,
+    plotOutput("robplot")
     )
   )
 

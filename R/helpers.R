@@ -11,19 +11,20 @@ pkgs <- function(...) {
 }
 
 pkgs(c("shiny",
-        "shinydashboard",
-        "shinyjs",
-        "shinysurveys",
-        "shinyWidgets",
-        "shinyvalidate",
-        "bslib",
-        "tidyverse",
-        "data.table",
-        "htmltools",
-        "sass",
-        "robvis",
-        "magrittr",
-        "rvest"))
+       "shinydashboard",
+       "shinyjs",
+       "shinysurveys",
+       "shinyWidgets",
+       "shinyvalidate",
+       "shinyFeedback",
+       "bslib",
+       "tidyverse",
+       "data.table",
+       "htmltools",
+       "sass",
+       "robvis",
+       "magrittr",
+       "rvest"))
 
 
 # Helper functions --------------------------------------------------------
@@ -32,6 +33,11 @@ pkgs(c("shiny",
 
 tab_title <- function(string) {
   HTML(paste("", string, sep = "<br/>"))
+}
+
+# add space after tab title
+space_after <- function(string) {
+  HTML(paste(string, "&emsp;", sep = "<br/>"))
 }
 
 # define steps of assessment
@@ -499,7 +505,7 @@ df_sections <- df %>%
 outcomes <- fread(here::here("data","outcomes.csv"), header = T, na.strings = c("")) %>%
   select(bias_type, response, outcome)
 
-# clean survey responses into tidy format
+# tidy survey responses
 tidy_responses <- function(responses){
   responses <- responses %>%
     mutate(study_id = responses %>% filter(question_id %in% "study_id") %>% pull(response)) %>%
@@ -507,13 +513,13 @@ tidy_responses <- function(responses){
     rename(response_id = response) %>% 
     mutate(response = interaction(question_id, response_id)) %>%
     filter(!question_id %in% c("study_id","study_doi")) %>% 
-    left_join(outcomes, by="response") %>% 
-    filter(!is.na(outcome)) %>% 
-    select(study_id, study_doi, question_id, bias_type, response_id, outcome)
+    left_join(outcomes, by="response")
+    # filter(!is.na(outcome)) %>% 
+    # select(study_id, study_doi, question_id, bias_type, response_id, outcome)
   return(responses)
 }
 
-# this function should concatenate multiple rob assessments and prepare for visualization
+# reformat input files for robvis plots
 prepare_robvis <- function(dat){
   dat <- dat %>% 
     select(study_id, bias_type, outcome) %>% 

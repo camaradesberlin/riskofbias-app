@@ -122,6 +122,7 @@ sidebar <- dashboardSidebar(
 
 body <- dashboardBody(
   useShinyjs(),
+  useShinyFeedback(),
   tags$style(shiny::HTML(mystyle)),
   tabItems(
     about,
@@ -175,6 +176,8 @@ server <- function(input, output, session) {
       select(response)
   })
   
+  # observe(print(data_tidy()))
+  
 
 # Download responses ------------------------------------------------------
 
@@ -189,31 +192,80 @@ server <- function(input, output, session) {
           paste0(study_id(), "_RoB_", Sys.Date(), ".csv")
         },
         content = function(file) {
-          write.csv(data_tidy(), file)
+          data.table::fwrite(data_tidy(), file)
         }
       )
   
 
 # Read input file ---------------------------------------------------------
+  
+  # validate file type
+  observeEvent(input$uploadfile,{
 
+    ext <- tools::file_ext(input$uploadfile$datapath)
+
+    if(length(unique(ext)) == 1 &&
+       ext[1] == "csv") {
+      showFeedbackSuccess("uploadfile")
+    } else {
+      showFeedbackDanger("uploadfile",
+                         text = "Only csv files are supported")
+    }
+
+  })
+    
   # read in uploaded data
   userdata <- reactive({ 
-    req(input$uploadfile) #  require that the input is available
     
+    req_cols <- c("study_id","bias_type","outcome")
+
     inFile <- input$uploadfile 
     
-    # read user provided file if only one is provided
-    if (length(inFile$name) == 1)
-      df <- read.csv(inFile$datapath, sep = ",")
-    # if multiple files, read and concatenate into one df
-    else if(length(inFile$name) > 1) {
-      paths <- inFile$datapath
-      df <- do.call(
-        rbind, 
-        lapply(paths, function(f) {
-          read.csv(f, sep = ",")
+    # read user-provided file if only one is provided
+    if (length(inFile$name) == 1) {
+      df <- fread(inFile$datapath, sep = ",")
+      # check columns
+
+      if(!all(req_cols %in% colnames(df))) {
+       # show message
+        output$datamessage <- renderUI({
+          HTML(
+            as.character(div(style="color: orange;", 
+                             "Incorrect columns in data file. See help button for more information."))
+          )
         })
-      )
+      } else {
+        output$datamessage <- renderUI("")
+      }
+      # if multiple files, read and concatenate into one df
+    } else if(length(inFile$name) > 1) {
+      paths <- inFile$datapath
+      df <- try({
+        do.call(
+          rbind,
+          lapply(paths, function(f) {
+            data.table::fread(f, sep = ",")
+          })
+        )
+      }, silent = TRUE)
+      
+      if(inherits(df, "try-error")) {
+        output$datamessage <- renderUI({
+          HTML(
+            as.character(div(style="color: orange;", 
+                             "The files could not be combined. Please make sure the formatting is consistent."))
+          )
+        })
+        } else if(!all(req_cols %in% colnames(df))) {
+          output$datamessage <- renderUI({
+            HTML(
+              as.character(div(style="color: orange;", 
+                               "Incorrect columns in data file. See help button for more information."))
+            )
+          })
+        } else {
+          output$datamessage <- renderUI("")
+        }
     }
     
     return(df)
@@ -240,7 +292,6 @@ server <- function(input, output, session) {
 
   # generate plot
   observeEvent(input$generateplot, {
-
     output$robplot <- renderPlot({
       if (input$showPlotType == "Traffic light plot"){
         robvis::rob_traffic_light(data_plot(), 
@@ -485,6 +536,16 @@ server <- function(input, output, session) {
   })
 
 
+# File upload information -------------------------------------------------
+
+observeEvent(input$helpUpload, {
+  showModal(
+    modalDialog(
+      title = "Help",
+      "The app expects a datafile in the following format."
+    )
+  )
+})
 
 # Reset responses ---------------------------------------------------------
 
