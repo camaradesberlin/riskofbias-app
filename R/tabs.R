@@ -648,6 +648,7 @@ animal_addition <- tabItem(
 tool <- tabItem(
   tabName = "tool",
   h2("Risk of bias assessment"),
+  br(),
   shiny::fluidPage(
     column(
       width = 4,

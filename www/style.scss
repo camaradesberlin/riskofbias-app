@@ -12,7 +12,7 @@ $dark: darken($color, 15%);
 .skin-blue .main-header .logo {
   background-color: #fff;
   color: #235444;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Helvetica', sans-serif;
   font-weight: bold;
 }
 
@@ -72,12 +72,12 @@ $dark: darken($color, 15%);
 }
 
 body {
-	font-family: 'Arial', sans-serif;
+	font-family: 'Helvetica', sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
 	color: #333;
-	font-family: 'Arial', sans-serif;
+	font-family: 'Helvetica', sans-serif;
 }
 
 h1, h2, h3 {
@@ -100,19 +100,19 @@ h1 {
 
 h3 {
 	font-style: normal;
-	font-family: 'Arial', sans-serif;
+	font-family: 'Helvetica', sans-serif;
 }
 
 h4 {
   font-weight: bold;
-	font-family: 'Arial', sans-serif;
+	font-family: 'Helvetica', sans-serif;
 }
 
 p {
 	color: #333;
 	margin: 0px;
 	margin-bottom: 10px;
-	font-family: 'Arial', sans-serif;
+	font-family: 'Helvetica', sans-serif;
 }
 
 li.l {
@@ -186,6 +186,7 @@ label {
 .container-fluid {
 
     .survey {
+      border: 1px solid #444;
       padding: 0px;
       padding-left: 5%;
       padding-right: 0%;
@@ -276,7 +277,7 @@ label {
     border-radius: 0px;
     
     p {
-      color: #444;
+      color: #666;
     }
     
     h1, h2, h3 {
@@ -345,4 +346,9 @@ label {
   font-size: 12px;
   display: inline-block;
   font-weight: bold;
+}
+
+.container-fluid .survey {
+  overflow: auto;
+  height: 70vh !important;
 }
