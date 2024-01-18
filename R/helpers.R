@@ -13,10 +13,10 @@ pkgs <- function(...) {
 pkgs(c("shiny",
        "shinydashboard",
        "shinyjs",
-       "shinysurveys",
        "shinyWidgets",
        "shinyvalidate",
        "shinyFeedback",
+       "shinyalert",
        "bslib",
        "tidyverse",
        "data.table",
@@ -24,8 +24,23 @@ pkgs(c("shiny",
        "sass",
        "robvis",
        "magrittr",
-       "rvest"))
+       "rvest",
+       "lorem",
+       "pak",
+       "dplyr"))
 
+# get shinysurveys from github
+
+source <- (pak::pkg_status("shinysurveys"))$remotetype
+
+if(!source == "github")
+  pak::pkg_install("jdtrat/shinysurveys") else if(source == "github")
+    library(shinysurveys)
+
+
+
+
+pak::pkg_status("robvis")
 
 # Helper functions --------------------------------------------------------
 
@@ -126,6 +141,20 @@ step_ids <- tool_steps %>%
 title_ids <- paste0(step_ids, "_title")
 check_ids <- paste0(step_ids, "title")
 
+# add question type "comments" in survey df
+add_comments <- function(df) {
+  df <- df %>% 
+    group_by(input_id) %>% 
+    group_modify(~ add_row(
+      input_type = "text", 
+      required = FALSE,
+      question = "Justification",
+      .x)) %>% 
+    fill(input_id, page, dependence, dependence_value, order, .direction = "downup") %>% 
+    mutate(input_id = ifelse(question == "Justification", 
+                             gsub("_tool", "_comments_tool", input_id), input_id))
+}
+
 
 # Custom theme ------------------------------------------------------------
 
@@ -143,6 +172,7 @@ mystyle <- sass::sass(
 
 
 # Data for survey structure -----------------------------------------------
+
 
 # Define questions in the format of a shinysurvey
 
@@ -210,10 +240,14 @@ sequence_allocation <- tibble(
                    "describe_random_component_tool","appropriate_randomization_tool"), each = 2),
   required = TRUE,
   page = 2) %>%
-  # mutate(input_id = gsub('\\b(\\pL)\\pL{3,}|.','\\U\\1', question, perl = TRUE)) %>%
   mutate(dependence = rep(c(NA, "same_model_tool", "report_random_allocation_tool",
                             "describe_random_component_tool"), each = 2)) %>%
-  mutate(dependence_value = rep(c(NA, "Yes","Yes","Yes"), each = 2))
+  mutate(dependence_value = rep(c(NA, "Yes","Yes","Yes"), each = 2)) %>% 
+  mutate(order = rep(c(1:length(unique(question))), each = 2)) %>% 
+  add_comments() %>% 
+  ungroup() %>% 
+  arrange(order) %>% 
+  select(-order)
 
 # sequence_allocation <- tibble(
 #   question = rep(
@@ -231,7 +265,7 @@ sequence_allocation <- tibble(
 #   # mutate(input_id = gsub('\\b(\\pL)\\pL{3,}|.','\\U\\1', question, perl = TRUE)) %>%
 #   mutate(required = ifelse(input_type == "y/n", TRUE, FALSE)) %>%
 #   mutate(input_id = ifelse(input_type == "text", paste0(input_id, "_text"), input_id)) %>%
-#   mutate(question = ifelse(input_type == "text", "Justification", question)) %>% 
+#   mutate(question = ifelse(input_type == "text", "Justification", question)) %>%
 #   mutate(dependence = rep(c(NA, "same_model_tool", "report_random_allocation_tool",
 #                             "describe_random_component_tool"), each = 3)) %>%
 #   mutate(dependence_value = rep(c(NA, "Yes","Yes","Yes"), each = 3))
@@ -250,7 +284,12 @@ baseline_characteristics <- tibble(
   page = 3) %>%
   # mutate(input_id = gsub('\\b(\\pL)\\pL{3,}|.','\\U\\1', question, perl = TRUE)) %>%
   mutate(dependence = rep(c(NA, "report_base_chars_tool", "similar_base_chars_tool"), each = 2)) %>%
-  mutate(dependence_value = rep(c(NA, "Yes","No"), each = 2))
+  mutate(dependence_value = rep(c(NA, "Yes","No"), each = 2)) %>% 
+  mutate(order = rep(c(1:length(unique(question))), each = 2)) %>% 
+  add_comments() %>% 
+  ungroup() %>% 
+  arrange(order) %>% 
+  select(-order)
 
 allocation_concealment <- tibble(
   question = rep(
@@ -265,7 +304,12 @@ allocation_concealment <- tibble(
   page = 4) %>%
   # mutate(input_id = gsub('\\b(\\pL)\\pL{3,}|.','\\U\\1', question, perl = TRUE)) %>%
   mutate(dependence = rep(c(NA, "describe_allocation_tool", "seqgen_blind_tool"), each = 2)) %>%
-  mutate(dependence_value = rep(c(NA, "Yes","No"), each = 2))
+  mutate(dependence_value = rep(c(NA, "Yes","No"), each = 2)) %>% 
+  mutate(order = rep(c(1:length(unique(question))), each = 2)) %>% 
+  add_comments() %>% 
+  ungroup() %>% 
+  arrange(order) %>% 
+  select(-order)
 
 random_housing <- tibble(
   question = rep(
@@ -278,7 +322,12 @@ random_housing <- tibble(
   required = TRUE,
   page = 5) %>%
   mutate(dependence = rep(c(NA, "describe_housing_tool"), each = 2)) %>%
-  mutate(dependence_value = rep(c(NA, "Yes"), each = 2))
+  mutate(dependence_value = rep(c(NA, "Yes"), each = 2)) %>% 
+  mutate(order = rep(c(1:length(unique(question))), each = 2)) %>% 
+  add_comments() %>% 
+  ungroup() %>% 
+  arrange(order) %>% 
+  select(-order)
 
 blinded_conduct <- tibble(
   question = rep(
@@ -297,7 +346,12 @@ blinded_conduct <- tibble(
   page = 6) %>%
   mutate(dependence = rep(c(NA, "mention_blinding_tool", "blinding_general_tool", 
                             "blinding_general_tool","blinding_explicit_tool"), each = 2)) %>%
-  mutate(dependence_value = rep(c(NA, "Yes","No","Yes","Yes"), each = 2))
+  mutate(dependence_value = rep(c(NA, "Yes","No","Yes","Yes"), each = 2)) %>% 
+  mutate(order = rep(c(1:length(unique(question))), each = 2)) %>% 
+  add_comments() %>% 
+  ungroup() %>% 
+  arrange(order) %>% 
+  select(-order)
 
 random_outcome_assessment <- tibble(
   question = rep(
@@ -317,7 +371,12 @@ random_outcome_assessment <- tibble(
   page = 7) %>%
   mutate(dependence = rep(c(NA, "mention_random_tool", "mention_random_general_tool", 
                             "mention_random_general_tool","describe_random_outcome_selection_tool"), each = 2)) %>%
-  mutate(dependence_value = rep(c(NA, "Yes","No","Yes","Yes"), each = 2))
+  mutate(dependence_value = rep(c(NA, "Yes","No","Yes","Yes"), each = 2)) %>% 
+  mutate(order = rep(c(1:length(unique(input_id))), each = 2)) %>% 
+  add_comments() %>% 
+  ungroup() %>% 
+  arrange(order) %>% 
+  select(-order)
 
 
 blinded_outcome_assessment <- tibble(
@@ -339,7 +398,12 @@ blinded_outcome_assessment <- tibble(
   page = 8) %>%
   mutate(dependence = rep(c(NA, "mention_blinding_outcome_tool", "blinding_outcome_general_tool", 
                             "blinding_outcome_general_tool","blinding_assessors_explicit_tool"), each = 2)) %>%
-  mutate(dependence_value = rep(c(NA, "Yes","No","Yes","Yes"), each = 2))
+  mutate(dependence_value = rep(c(NA, "Yes","No","Yes","Yes"), each = 2)) %>% 
+  mutate(order = rep(c(1:length(unique(question))), each = 2)) %>% 
+  add_comments() %>% 
+  ungroup() %>% 
+  arrange(order) %>% 
+  select(-order)
 
 
 
@@ -381,7 +445,12 @@ incomplete_outcome_data <- tibble(
                                   "Yes",
                                   "Yes",
                                   "Yes",
-                                  "No"), each = 2))
+                                  "No"), each = 2)) %>% 
+  mutate(order = rep(c(1:length(unique(question))), each = 2)) %>% 
+  add_comments() %>% 
+  ungroup() %>% 
+  arrange(order) %>% 
+  select(-order)
 
 selective_outcome_reporting <- tibble(
   question = rep(
@@ -413,7 +482,12 @@ selective_outcome_reporting <- tibble(
                                   "Yes",
                                   "No",
                                   "Yes",
-                                  "Yes"), each = 2))
+                                  "Yes"), each = 2)) %>% 
+  mutate(order = rep(c(1:length(unique(question))), each = 2)) %>% 
+  add_comments() %>% 
+  ungroup() %>% 
+  arrange(order) %>% 
+  select(-order)
 
 funder_influence <- tibble(
   question = rep(
@@ -427,7 +501,12 @@ funder_influence <- tibble(
   required = TRUE,
   page = 11) %>%
   mutate(dependence = rep(c(NA, "coi_statement_tool"), each = 2)) %>%
-  mutate(dependence_value = rep(c(NA, "Yes"), each = 2))
+  mutate(dependence_value = rep(c(NA, "Yes"), each = 2)) %>% 
+  mutate(order = rep(c(1:length(unique(question))), each = 2)) %>% 
+  add_comments() %>% 
+  ungroup() %>% 
+  arrange(order) %>% 
+  select(-order)
 
 unit_of_analysis <- tibble(
   question = rep(
@@ -444,7 +523,12 @@ unit_of_analysis <- tibble(
   page = 12) %>%
   # mutate(input_id = gsub('\\b(\\pL)\\pL{3,}|.','\\U\\1', question, perl = TRUE)) %>%
   mutate(dependence = rep(c(NA, "treatm_dissolved_tool", "indiv_housing_tool"), each = 2)) %>%
-  mutate(dependence_value = rep(c(NA, "Yes","No"), each = 2))
+  mutate(dependence_value = rep(c(NA, "Yes","No"), each = 2)) %>% 
+  mutate(order = rep(c(1:length(unique(question))), each = 2)) %>% 
+  add_comments() %>% 
+  ungroup() %>% 
+  arrange(order) %>% 
+  select(-order)
 
 animal_addition <- tibble(
   question = rep(
@@ -456,7 +540,12 @@ animal_addition <- tibble(
   required = TRUE,
   page = 13) %>%
   mutate(dependence = rep(c(NA), each = 2)) %>%
-  mutate(dependence_value = rep(c(NA), each = 2))
+  mutate(dependence_value = rep(c(NA), each = 2)) %>% 
+  mutate(order = rep(c(1:length(unique(question))), each = 2)) %>% 
+  add_comments() %>% 
+  ungroup() %>% 
+  arrange(order) %>% 
+  select(-order)
 
 df <- rbind(metadata,
             instructions,
