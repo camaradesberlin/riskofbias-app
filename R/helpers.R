@@ -22,25 +22,30 @@ pkgs(c("shiny",
        "data.table",
        "htmltools",
        "sass",
-       "robvis",
        "magrittr",
        "rvest",
        "lorem",
        "pak",
        "dplyr"))
 
-# get shinysurveys from github
+# get shinysurveys and robvis from github
 
-source <- (pak::pkg_status("shinysurveys"))$remotetype
+source_shinysurveys <- (pak::pkg_status("shinysurveys"))$remotetype
 
-if(!source == "github")
-  pak::pkg_install("jdtrat/shinysurveys") else if(source == "github")
-    library(shinysurveys)
+if(!source_shinysurveys %in% "github") {
+  pak::pkg_install("jdtrat/shinysurveys")
+} else if(source_shinysurveys %in% "github") {
+  library(shinysurveys)
+}
+    
+source_robvis <- (pak::pkg_status("robvis"))$remotetype
 
+if(!source_robvis %in% "github") {
+  pak::pkg_install("mcguinlu/robvis")
+} else if(source_robvis %in% "github") {
+  library(robvis)
+}
 
-
-
-pak::pkg_status("robvis")
 
 # Helper functions --------------------------------------------------------
 
@@ -595,17 +600,41 @@ outcomes <- fread(here::here("data","outcomes.csv"), header = T, na.strings = c(
   select(bias_type, response, outcome)
 
 # tidy survey responses
-tidy_responses <- function(responses){
-  responses <- responses %>%
-    mutate(study_id = responses %>% filter(question_id %in% "study_id") %>% pull(response)) %>%
-    mutate(study_doi = (responses %>% filter(question_id %in% "study_doi") %>% pull(response))) %>% 
+tidy_responses <- function(dat){
+
+  study_id <- dat %>% filter(question_id %in% "study_id") %>% pull(response)
+  study_doi <- dat %>% filter(question_id %in% "study_doi") %>% pull(response)
+  
+  dat <- dat %>%
+    mutate_all(na_if,"") %>%
+    mutate(study_id = study_id) %>%
+    mutate(study_doi = study_doi) %>% 
     rename(response_id = response) %>% 
     mutate(response = interaction(question_id, response_id)) %>%
     filter(!question_id %in% c("study_id","study_doi")) %>% 
-    left_join(outcomes, by="response")
-    # filter(!is.na(outcome)) %>% 
-    # select(study_id, study_doi, question_id, bias_type, response_id, outcome)
-  return(responses)
+    left_join(outcomes, by="response") %>% 
+    mutate(outcome = ifelse(str_detect(question_id, "comment"), "comment", outcome)) %>% 
+    filter(!response_id %in% "HIDDEN-QUESTION") %>%
+    unite("value", c("response_id", "outcome")) %>%
+    mutate(item = ifelse(str_detect(question_id, "comments"),
+                         str_remove(question_id, "_comments_tool"),
+                         str_remove(question_id, "_tool"))) %>%
+    mutate(type = ifelse(str_detect(question_id, "comments"), "comment", "response")) %>%
+    select(-c(question_id, response, subject_id, question_type)) %>% 
+    group_by(item) %>%
+    fill(bias_type) %>% 
+    pivot_wider(names_from = type, values_from = value) %>%
+    ungroup() %>%
+    mutate(comment = str_extract(comment, "[^_]+")) %>%
+    rename(question_id = item) %>%
+    group_by(bias_type) %>%
+    filter(!str_detect(response, "NA")) %>%
+    slice(1) %>%
+    ungroup() %>%
+    separate(response, into=c("response_id", "outcome")) %>%
+    mutate_all(na_if, "NA") %>%
+    select(study_id, study_doi, question_id, bias_type, response_id, outcome, comment)
+  return(dat)
 }
 
 # reformat input files for robvis plots
@@ -618,7 +647,6 @@ prepare_robvis <- function(dat){
   return(dat)
 }
 
-
 # Show outcomes in app ----------------------------------------------------
 
 outcomes_app <- outcomes %>% 
@@ -630,5 +658,4 @@ outcomes_app <- outcomes %>%
   ) %>% 
   mutate(input_response = interaction(input_id, response)) %>% 
   select(-c(bias_type, input_id, response))
-  
   
