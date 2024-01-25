@@ -151,6 +151,7 @@ add_comments <- function(df) {
   df <- df %>% 
     group_by(input_id) %>% 
     group_modify(~ add_row(
+      option = "",
       input_type = "text", 
       required = FALSE,
       question = "Justification",
@@ -187,7 +188,7 @@ metadata <- tibble(
   option = c("https://","Enter a unique identifier for the study e.g. "),
   input_type = "text",
   input_id = c("study_doi","study_id"),
-  required = TRUE,
+  required = c(FALSE, TRUE),
   page = 1) %>% 
   mutate(dependence = NA) %>% 
   mutate(dependence_value = NA)
@@ -201,16 +202,39 @@ instructions <- tibble(
   Describe all the possible prognostic factors or animal characteristics, if any, that are 
   compared in order to judge whether or not intervention and control groups were similar 
   at the start of the experiment.",
-  "### Allocation concealment",
-  "### Random housing",
-  "### Blinded conduct of the experiment",
-  "### Random outcome assessment",
-  "### Blinded outcome assessment",
-  "### Incomplete outcome data",
-  "### Selective outcome reporting",
-  "### Inappropriate influence of funders",
-  "### Unit of analysis bias",
-  "### Addition of animals"
+  "### Allocation concealment
+  Describe the method used to conceal the allocation
+  sequence in sufficient detail to determine whether
+  intervention allocations could have been foreseen
+  before or during enrolment.",
+  "### Random housing
+  Describe all measures used, if any, to house the animals
+  randomly within the animal room.",
+  "### Blinded conduct of the experiment
+  Describe all measures used, if any, to blind trial caregivers and researchers 
+  from knowing which intervention each animal received. Provide any information 
+  relating to whether the intended blinding was effective.",
+  "### Random outcome assessment
+  Describe whether or not animals were selected at random for outcome assessment, 
+  and which methods to select the animals, if any, were used.",
+  "### Blinded outcome assessment
+  Describe all measures used, if any, to blind outcome assessors from knowing 
+  which intervention each animal received. Provide any information relating to 
+  whether the intended blinding was effective.",
+  "### Incomplete outcome data
+  Describe the completeness of outcome data for each main outcome, including 
+  attrition and exclusions from the analysis. State whether attrition and exclusions 
+  were reported, the numbers in each intervention group (compared with total 
+  randomized animals), reasons for attrition or exclusions, and any re-inclusions 
+  in analyses for the review.",
+  "### Selective outcome reporting
+  State how selective outcome reporting was examined and what was found.",
+  "### Inappropriate influence of funders
+  State any important concerns about bias not covered by other domains in the tool.",
+  "### Unit of analysis bias
+  State any important concerns about bias not covered by other domains in the tool.",
+  "### Addition of animals
+  State any important concerns about bias not covered by other domains in the tool."
   ),
   option = c(NA),
   input_type = c("instructions"),
