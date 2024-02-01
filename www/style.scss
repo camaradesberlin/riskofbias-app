@@ -139,7 +139,8 @@ input[type=text] {
 
 label {
   margin-bottom: 6px;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
+  font-weight: 600;
 }
 
 .required {
@@ -153,6 +154,8 @@ label {
   color: #fff;
   margin-bottom: 10px;
   border-radius: 20px;
+  margin-left: 30px;
+  margin-right: 15px;
 }
 
 .nav-tabs-custom>.nav-tabs {
@@ -186,7 +189,7 @@ label {
 .container-fluid {
 
     .survey {
-      border: 1px solid #444;
+      /*border: 1px solid #444;*/
       padding: 0px;
       padding-left: 5%;
       padding-right: 0%;
@@ -242,10 +245,10 @@ label {
       .questions {
         display: grid;
         background-color: white;
-        border: 0px solid #CCCCCC;
-        border-radius: 10px;
-        margin-bottom: 12px;
-        padding: 10px;
+        /*border: 0px solid #CCCCCC;*/
+        /*border-radius: 10px;*/
+        margin-bottom: 5px;
+        padding: 5px;
         min-height: 138px;
         font-size: 1.4rem;
 
@@ -278,11 +281,16 @@ label {
     
     p {
       color: #666;
+      font-size: 1.3rem;
     }
     
     h1, h2, h3 {
       color: #235444;
       
+    }
+    
+    h3 {
+      font-size: 20px;
     }
 }
 
@@ -352,3 +360,39 @@ label {
   overflow: auto;
   height: 70vh !important;
 }
+
+.comment-box {
+  font-weight: 500;
+  font-size: 18px;
+  background-color: red;
+}
+
+/*
+@media screen and (max-width: 1195px) {
+  .nav-tabs-custom {
+    margin-left: 26px;
+    margin-right: 26px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .nav-tabs-custom {
+    margin-left: 26px;
+    margin-right: 26px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .nav-tabs-custom {
+    margin-left: 26px;
+    margin-right: 26px;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .nav-tabs-custom {
+    margin-left: 26px;
+    margin-right: 26px;
+  }
+}
+*/

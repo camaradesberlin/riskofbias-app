@@ -165,7 +165,7 @@ server <- function(input, output, session) {
   
   # tidy up df for desired output
   data_tidy <- reactive({
-    response_data() %>% 
+    response_data() %>%
       tidy_responses()
   })
   
@@ -176,7 +176,7 @@ server <- function(input, output, session) {
       select(response)
   })
   
-  # observe(print(data_tidy()))
+  observe(print(data_tidy()))
   
 
 # Download responses ------------------------------------------------------
@@ -535,6 +535,32 @@ server <- function(input, output, session) {
 
   })
 
+
+# Format optional comment boxes -------------------------------------------
+
+  # comment_ids <- df %>% 
+  #   filter(str_detect(input_id, "comment")) %>% 
+  #   pull(input_id)
+  # 
+  # observe({
+  #   
+  #   for (i in comment_ids) {
+  #     
+  #     label_id <- paste0(i, "-label")
+  #     print(label_id)
+  #     
+  #     # shinyjs::removeClass(
+  #     #   id = i,
+  #     #   class = "control-label"
+  #     # )
+  #     shinyjs::addClass(
+  #       id = i,
+  #       class = "high-bias"
+  #     )
+  #   }
+  #   
+  # })
+  
 
 # File upload information -------------------------------------------------
 

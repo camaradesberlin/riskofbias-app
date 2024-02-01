@@ -3,19 +3,27 @@
 
 about <- tabItem(
   tabName = "about",
-  h1("Welcome!"),
-  lorem::ipsum(paragraphs = 1),
-  h2("How to use this app"),
-  lorem::ipsum(paragraphs = 2)
+  h1("Welcome"),
+  hr("The CAMARADES (Collaborative Approach to Meta-Analysis and Review of Animal Data from 
+  Experimental Studies) group specialise in performing systematic review and meta-analysis 
+  of data from experimental studies."),
+  h2("How to make the most out of this tool"),
+  "Here you can find information on the different types of bias present in preclinical
+  experimental studies. Our goal is to provide a comprehensive resource on how different
+  types of bias present in the literature and what kind of questions can be asked
+  to evaluate risk of bias in preclinical studies.",
+  br(),
+  br(),
+  br(),
+  h3("Acknowledgements"),
+  
 )
-
-
 
 # Sequence allocation -----------------------------------------------------
 
 sequence_allocation <- tabItem(
   tabName = step_ids[[1]],
-  h1("Sequence allocation"),
+  h1("1. Sequence allocation"),
   "Sequence allocation refers to the allocation of animals to the experimental and 
   control groups. This should be adequately generated, but also adequately applied, with 
   appropriate randomization. This item assesses whether the methodology used to generate
@@ -100,7 +108,7 @@ sequence_allocation <- tabItem(
 
 baseline_characteristics <- tabItem(
   tabName = step_ids[[2]],
-  h1("Baseline characteristics"),
+  h1("2. Baseline characteristics"),
   "This item refers to the distribution of relevant baseline characteristics for the different
   treatment groups. Depending on whether this distribution is balanced or unequal, 
   different actions are recommended to investigators in order to avoid bias.
@@ -172,7 +180,7 @@ baseline_characteristics <- tabItem(
 
 allocation_concealment <- tabItem(
   tabName = step_ids[[3]],
-  h1("Allocation concealment"),
+  h1("3. Allocation concealment"),
   "Allocation concealment refers to the blinding of participants and personnel, which 
   can be a source of performance bias. In the case of animal studies, this refers predominantly 
   to the personnel involved in the experiments. This includes both researchers, as well as animal
@@ -242,10 +250,9 @@ allocation_concealment <- tabItem(
 
 random_housing <- tabItem(
   tabName = step_ids[[4]],
-  h1("Random housing"),
-  "This item refers to the housing conditions of animals during the experiment, an important 
-  element of adequately blinding the animal caregivers and investigators. 
-  As housing conditions (such as lighting, humidity,  temperature, etc.) are known to 
+  h1("4. Random housing"),
+  "This item refers to the housing conditions of animals during the experiment. As housing conditions 
+  (such as lighting, humidity,  temperature, etc.) are known to 
   influence study outcomes (such as certain biochemical parameters and behavior), 
   it is important that the housing of these animals is randomized or, in other words, 
   comparable between the experimental groups in order to reduce the risk of performance bias.",
@@ -299,8 +306,9 @@ random_housing <- tabItem(
 
 blinded_conduct <- tabItem(
   tabName = step_ids[[5]],
-  h1("Blinded conduct of the experiment"),
-  lorem::ipsum(paragraph = 1),
+  h1("5. Blinded conduct of the experiment"),
+  "This item evaluates whether the personnel (caregivers and/or investigators) were 
+  blinded from knowledge on which intervention each animal received during the experiment.",
   br(),
   br(),
   br(),
@@ -316,7 +324,9 @@ blinded_conduct <- tabItem(
       ),
       tabPanel(
         "Description",
-        lorem::ipsum(paragraphs = 1)
+        p("Lack of explicit statements on blinding of investigators and/or caregivers could 
+        indicate an unclear risk of bias, given that insufficient information is available 
+          to evaluate the procedure.")
       )
     ),
     tabBox(
@@ -330,7 +340,16 @@ blinded_conduct <- tabItem(
       ),
       tabPanel(
         "Description",
-        lorem::ipsum(paragraphs = 1)
+        p("Examples of appropriate blinding methods in this context include: using ID cards of 
+        individual animals or cage/animal labels that are coded and identical in appearance, using 
+        sequentially numbered drug containers are identical in appearance, specifying similar circumstances 
+        during the intervention in both groups, and randomizing housing conditions of the animals during 
+        the experiment (see section Random Housing). Inappropriate blinding procedures could include: differently
+        colored cage labels per group, expected differences in visible effects between control and experimental 
+        groups, non-randomized housing conditions and having the same individual(s) prepare, conduct and analyse
+        the experiment. Inappropriate blinding could be in play when the intervention circumstances are not similar
+        betwen groups, such as different timing of placebo/drug administration or using different instruments to
+        carry out the same experimental procedures in the two groups.")
       )
     )
   )
@@ -341,8 +360,14 @@ blinded_conduct <- tabItem(
 
 random_outcome <- tabItem(
   tabName = step_ids[[6]],
-  h1("Random outcome assessment"),
-  lorem::ipsum(paragraph = 1),
+  h1("6. Random outcome assessment"),
+  "This item refers to determining whether or not animals were selected at random 
+  for outcome assessment, regardless of the allocation to the experimental or control group. 
+  For instance, when animals are sacrificed per group at various time points during the day, 
+  the scientist concerned might interpret the results of the groups differently because she 
+  or he can foresee or predict the allocation. Another reason to select animals at random for outcome 
+  assessment is the presence of circadian rhythms in many biological processes. Not selecting the animals 
+  for outcome assessment at random might influence the direction and magnitude of the effect.",
   br(),
   br(),
   br(),
@@ -358,7 +383,10 @@ random_outcome <- tabItem(
       ),
       tabPanel(
         "Description",
-        lorem::ipsum(paragraphs = 1)
+        p("It is possible that authors provide a general statement in the beginning of the Methods section 
+        stating that all procedures were conducted in a random manner. In this case, this general statement can be considered 
+        to include specific outcome assessments. Neverthtless, the methods used to determine random outcome assessment
+        still need to be described in order to achieve a low risk of bias in this domain.")
       )
     ),
     tabBox(
@@ -372,7 +400,11 @@ random_outcome <- tabItem(
       ),
       tabPanel(
         "Description",
-        lorem::ipsum(paragraphs = 1)
+        p("Examples of appropriate (i.e. random) sequence generation methods include referring to a 
+          random number table or using a computer random number generator. On the other hand, examples of
+          inappropriate (non-random) sequence generation methods could be allocation by investigator's judgement or
+          preference, allocation based on a series of tests or availability of intervention, or determining the sequence
+          based on other arbitrary rules such as odd/even date of birth or cage number.")
       )
     )
   )
@@ -383,8 +415,10 @@ random_outcome <- tabItem(
 
 blind_outcome <- tabItem(
   tabName = step_ids[[7]],
-  h1("Blinded outcome assessment"),
-  lorem::ipsum(paragraph = 1),
+  h1("7. Blinded outcome assessment"),
+  "This refers to evaluating the methods used for outcome assessment in both the experimental and
+  control groups, with regard to adequate blinding. This item should be assessed separately
+  for each main outcome.",
   br(),
   br(),
   br(),
@@ -400,7 +434,9 @@ blind_outcome <- tabItem(
       ),
       tabPanel(
         "Description",
-        lorem::ipsum(paragraphs = 1)
+        p("Similar to random outcome assessment, the goal of this signaling question is to
+          assess whether sufficient information is provided on adequately blinding outcome
+          assessors.")
       )
     ),
     tabBox(
@@ -414,7 +450,12 @@ blind_outcome <- tabItem(
       ),
       tabPanel(
         "Description",
-        lorem::ipsum(paragraphs = 1)
+        p("As with blinding of experiment conduct, appropriate concealment methods include
+          the use of equipment such as ID cards, labels or drug containers that are coded and identical in 
+          appearance between groups, as well as randomizing housing conditions. Respectively,
+          inappropriate approaches to assessor blinding could include visibly different labels 
+          (e.g. colored) per group, non-randomized housing conditions, or differences in the 
+          circumstances under which intervention is administered (see also Item 5).")
       )
     )
   )
@@ -424,8 +465,9 @@ blind_outcome <- tabItem(
 
 incomplete_outcome <- tabItem(
   tabName = step_ids[[8]],
-  h1("Incomplete outcome data"),
-  lorem::ipsum(paragraph = 1),
+  h1("8. Incomplete outcome data"),
+  "This item evaluates whether incomplete outcome data were adequately addressed and the
+  risk of bias associated with that.",
   br(),
   br(),
   br(),
@@ -441,7 +483,9 @@ incomplete_outcome <- tabItem(
       ),
       tabPanel(
         "Description",
-        lorem::ipsum(paragraphs = 1)
+        p("In order to be able to assess risk of bias in this domain, explicit description 
+        of attrition in the study, such as mentioning drop-out and mortality should be
+          provided.")
       )
     ),
     tabBox(
@@ -455,7 +499,9 @@ incomplete_outcome <- tabItem(
       ),
       tabPanel(
         "Description",
-        lorem::ipsum(paragraphs = 1)
+        p("If these numbers match, no drop-out may be assumed, which is in turn indicative of a
+          low risk of bias. In case these numbers differ, unexplained drop-out rates would
+          suggest a high risk of bias.")
       )
     )
   ),
@@ -471,7 +517,9 @@ incomplete_outcome <- tabItem(
       ),
       tabPanel(
         "Description",
-        lorem::ipsum(paragraphs = 1)
+        p("In the presence of missing data, it is important that the authors clearly state
+          the numbers related to drop-out across groups, as well as the reasons, so potential
+          group differences may be determined.")
       )
     ),
     tabBox(
@@ -485,7 +533,9 @@ incomplete_outcome <- tabItem(
       ),
       tabPanel(
         "Description",
-        lorem::ipsum(paragraphs = 1)
+        p("In case missing data are present and the numbers/reasons are not balanced
+          across groups, the use of appropriate statistical methods for imputation should
+          be considered. Failure to address these imbalances could lead to a high risk of bias.")
       )
     )
   )
@@ -496,8 +546,8 @@ incomplete_outcome <- tabItem(
 
 selective_reporting <- tabItem(
   tabName = step_ids[[9]],
-  h1("Selective outcome reporting"),
-  lorem::ipsum(paragraph = 1),
+  h1("9. Selective outcome reporting"),
+  "This item evaluates reporting bias in a study.",
   br(),
   br(),
   br(),
@@ -513,7 +563,9 @@ selective_reporting <- tabItem(
       ),
       tabPanel(
         "Description",
-        lorem::ipsum(paragraphs = 1)
+        p("While registration of animal intervention protocols might not be standard practice 
+          for all yet, this is becoming increasingly more important, and a critical element
+          of bias assessments in preclinical studies.")
       )
     ),
     tabBox(
@@ -527,7 +579,11 @@ selective_reporting <- tabItem(
       ),
       tabPanel(
         "Description",
-        lorem::ipsum(paragraphs = 1)
+        p("If there is indication of explicitly unpublished results (e.g.'data not shown'),
+          there is a significant risk of reporting bias. Even in the case of reporting results
+          from all experiments described in the methods, the risk of reporting bias could remain
+          unclear, given that it is difficult to judge the planned analysis without a
+          preregistered protocol.")
       )
     )
   ),
@@ -543,7 +599,9 @@ selective_reporting <- tabItem(
       ),
       tabPanel(
         "Description",
-        lorem::ipsum(paragraphs = 1)
+        p("If no primary endpoint was defined in the protocol, a match between study reporting and all pre-specified 
+          outcomes is expected. If this is not the case, and no explicit deviations were reported,
+          a high risk of bias is present.")
       )
     ),
     tabBox(
@@ -557,7 +615,11 @@ selective_reporting <- tabItem(
       ),
       tabPanel(
         "Description",
-        lorem::ipsum(paragraphs = 1)
+        p("Even when the primary endpoint in the protocol matches the main finding of the final
+          report, any deviations from the protocol should be clearly stated to avoid a high risk 
+          of bias. Similarly, a high risk of bias is present if one or more of the outcomes reported 
+          in the final study were not pre-specified. This is subject to evaluation if clear 
+          justification may be provided (e.g. unexpected adverse effects).")
       )
     )
   )
@@ -568,7 +630,7 @@ selective_reporting <- tabItem(
 
 funder_influence <- tabItem(
   tabName = step_ids[[10]],
-  h1("Inappropriate influence of funders"),
+  h1("10.1 Inappropriate influence of funders"),
   lorem::ipsum(paragraph = 1),
   br(),
   br(),
@@ -585,7 +647,8 @@ funder_influence <- tabItem(
       ),
       tabPanel(
         "Description",
-        lorem::ipsum(paragraphs = 1)
+        p("Inappropriate influence of funders is a possibility, if no information
+          on the matter is available, which means the risk of bias status remains unclear.")
       )
     ),
     tabBox(
@@ -599,7 +662,8 @@ funder_influence <- tabItem(
       ),
       tabPanel(
         "Description",
-        lorem::ipsum(paragraphs = 1)
+        p("Author-reported conflicts of interest could represent significant sources
+          of bias in a study.")
       )
     )
   )
@@ -607,7 +671,7 @@ funder_influence <- tabItem(
 
 analysis_unit <- tabItem(
   tabName = step_ids[[11]],
-  h1("Unit of analysis bias"),
+  h1("10.2 Unit of analysis bias"),
   lorem::ipsum(paragraph = 1),
   br(),
   br(),
@@ -624,7 +688,7 @@ analysis_unit <- tabItem(
       ),
       tabPanel(
         "Description",
-        lorem::ipsum(paragraphs = 1)
+        p("")
       )
     ),
     tabBox(
@@ -638,7 +702,7 @@ analysis_unit <- tabItem(
       ),
       tabPanel(
         "Description",
-        lorem::ipsum(paragraphs = 1)
+        p("")
       )
     )
   ),
@@ -654,14 +718,17 @@ analysis_unit <- tabItem(
       ),
       tabPanel(
         "Description",
-        lorem::ipsum(paragraphs = 1)
+        p("Unit-of-analysis errors might be present in animal studies, which could lead to
+          inaccurate calculation of statistical measures. For example, if all mice in a cage
+          are given a treatment in their diet, the experimental unit is the cage and not the
+          individual animal.")
       )
     )
   )
 )
 animal_addition <- tabItem(
   tabName = step_ids[[12]],
-  h1("Addition of animals"),
+  h1("10.3 Addition of animals"),
   lorem::ipsum(paragraph = 1),
   br(),
   br(),
@@ -678,7 +745,8 @@ animal_addition <- tabItem(
       ),
       tabPanel(
         "Description",
-        lorem::ipsum(paragraphs = 1)
+        p("Addition of animals to the control or experimental groups to replace drop-outs from
+          the original sample is indicative of high risk of bias.")
       )
     )
   )
