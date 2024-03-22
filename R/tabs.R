@@ -3,20 +3,53 @@
 
 about <- tabItem(
   tabName = "about",
-  h1("Welcome"),
-  hr("The CAMARADES (Collaborative Approach to Meta-Analysis and Review of Animal Data from 
-  Experimental Studies) group specialise in performing systematic review and meta-analysis 
-  of data from experimental studies."),
-  h2("How to make the most out of this tool"),
-  "Here you can find information on the different types of bias present in preclinical
-  experimental studies. Our goal is to provide a comprehensive resource on how different
-  types of bias present in the literature and what kind of questions can be asked
-  to evaluate risk of bias in preclinical studies.",
-  br(),
-  br(),
-  br(),
-  h3("Acknowledgements"),
-  
+  fluidPage(
+    h1("Welcome"),
+    br(),
+    shiny::markdown(
+      "
+      ## CAMARADES Risk of Bias app
+      
+      Welcome! Here you will find information on the different types of bias present in preclinical experimental studies. 
+      Our goal is to provide a comprehensive resource on how different types of bias present in the literature and what kind of questions 
+      can be asked to evaluate risk of bias in preclinical studies. 
+      
+      Navigate through the different sections on the left-side panel to:
+      
+      - learn all about the different aspects of bias and how to assess risk of bias in preclinical studies
+      
+      - conduct a risk of bias assessment yourself on a study of your choice. 
+      
+      - export the results of your assessment and visualize them using 'traffic-light' plots.
+      
+      <br>
+      
+      <br>
+      
+      ## About the team
+      
+      The CAMARADES Collaborative Approach to Meta-Analysis and Review of Animal Data from Experimental Studies group 
+      specialize in performing systematic review and meta-analysis of data from experimental studies. If you have questions about this resource, please email us at: xxx
+      "
+      ),
+    br(),
+    br(),
+    br(),
+    shiny::markdown(
+      "
+      ## Acknowledgements
+      
+      The assessment tool implemented in this app is based on the SYRCLE's risk of bias tool for animal studies (Hooijmans et al., 2014). 
+      The visualizations are created using tools from the R package `robvis` (McGuinness and Higgins, 2020).
+      
+      <br>
+      
+      Hooijmans, C.R., Rovers, M.M., de Vries, R.B. et al. SYRCLE’s risk of bias tool for animal studies. BMC Med Res Methodol 14, 43 (2014). https://doi.org/10.1186/1471-2288-14-43
+      
+      McGuinness, LA, Higgins, JPT. Risk-of-bias VISualization (robvis): An R package and Shiny web app for visualizing risk-of-bias assessments. Res Syn Meth. 2020; 1- 7. https://doi.org/10.1002/jrsm.1411
+      "
+    )
+  )
 )
 
 # Sequence allocation -----------------------------------------------------

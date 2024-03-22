@@ -26,7 +26,8 @@ pkgs(c("shiny",
        "rvest",
        "lorem",
        "pak",
-       "dplyr"))
+       "dplyr",
+       "markdown"))
 
 # get shinysurveys and robvis from github
 
