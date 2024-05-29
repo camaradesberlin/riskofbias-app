@@ -172,7 +172,7 @@ mystyle <- sass::sass(
       ),
     readLines(
       here::here(
-        "www","style.scss")
+        "deploy_app","www","style.scss")
       )
     )
   )
@@ -621,7 +621,7 @@ df_sections <- df %>%
 
 # Clean responses ---------------------------------------------------------
 
-outcomes <- fread(here::here("data","outcomes.csv"), header = T, na.strings = c("")) %>%
+outcomes <- fread(here::here("deploy_app","data","outcomes.csv"), header = T, na.strings = c("")) %>%
   select(bias_type, response, outcome)
 
 # tidy survey responses

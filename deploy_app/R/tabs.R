@@ -913,9 +913,10 @@ plots <- tabItem(
 
 practice <- tabItem(
   tabName = "practice",
-  h1("Test your skills"),
-  lorem::ipsum(paragraphs = 1)
-)
+  h1(
+    "Test your skills (coming soon)"
+    )
+  )
 
 
            
