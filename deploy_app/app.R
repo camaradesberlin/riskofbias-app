@@ -1,7 +1,7 @@
 # Source scripts ----------------------------------------------------------
 
-source(here::here("deploy_app","helpers.R"))
-source(here::here("deploy_app","tabs.R"))
+source("helpers.R")
+source("tabs.R")
 
 # UI ----------------------------------------------------------------------
 

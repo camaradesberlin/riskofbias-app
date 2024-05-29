@@ -1,52 +1,24 @@
 # Libraries ---------------------------------------------------------------
 
-pkgs <- function(...) {
-  libs <- unlist(list(...))
-  req <- unlist(lapply(libs, require, character.only = TRUE))
-  need <- libs[req == FALSE]
-  if(length(need) > 0) { 
-    install.packages(need)
-    lapply(need, require, character.only = TRUE)
-  }
-}
-
-pkgs(c("shiny",
-       "shinydashboard",
-       "shinyjs",
-       "shinyWidgets",
-       "shinyvalidate",
-       "shinyFeedback",
-       "shinyalert",
-       "bslib",
-       "tidyverse",
-       "data.table",
-       "htmltools",
-       "sass",
-       "magrittr",
-       "rvest",
-       "lorem",
-       "pak",
-       "dplyr",
-       "markdown"))
-
-# get shinysurveys and robvis from github
-
-source_shinysurveys <- (pak::pkg_status("shinysurveys"))$remotetype
-
-if(!source_shinysurveys %in% "github") {
-  pak::pkg_install("jdtrat/shinysurveys")
-} else if(source_shinysurveys %in% "github") {
-  library(shinysurveys)
-}
-    
-source_robvis <- (pak::pkg_status("robvis"))$remotetype
-
-if(!source_robvis %in% "github") {
-  pak::pkg_install("mcguinlu/robvis")
-} else if(source_robvis %in% "github") {
-  library(robvis)
-}
-
+library(shiny)
+library(shinydashboard)
+library(shinyjs)
+library(shinyalert)
+library(shinyWidgets)
+library(shinyvalidate)
+library(shinyFeedback)
+library(bslib)
+library(data.table)
+library(dplyr)
+library(htmltools)
+library(sass)
+library(magrittr)
+library(rvest)
+library(markdown)
+library(tidyr)
+library(stringr)
+library(shinysurveys)
+library(robvis)
 
 # Helper functions --------------------------------------------------------
 
@@ -171,8 +143,7 @@ mystyle <- sass::sass(
       color = "#60ab9b"
       ),
     readLines(
-      here::here(
-        "deploy_app","www","style.scss")
+      "www/style.scss"
       )
     )
   )
@@ -621,7 +592,7 @@ df_sections <- df %>%
 
 # Clean responses ---------------------------------------------------------
 
-outcomes <- fread(here::here("deploy_app","data","outcomes.csv"), header = T, na.strings = c("")) %>%
+outcomes <- fread("data/outcomes.csv", header = T, na.strings = c("")) %>%
   select(bias_type, response, outcome)
 
 # tidy survey responses
