@@ -92,15 +92,15 @@ sidebar <- dashboardSidebar(
           tool_steps[[10]],
           tabName = step_ids[[10]]
         ),
+        # menuSubItem(
+        #   icon = NULL,
+        #   tool_steps[[11]],
+        #   tabName = step_ids[[11]]
+        # ),
         menuSubItem(
           icon = NULL,
           tool_steps[[11]],
           tabName = step_ids[[11]]
-        ),
-        menuSubItem(
-          icon = NULL,
-          tool_steps[[12]],
-          tabName = step_ids[[12]]
         )
       )
     ),
@@ -136,7 +136,7 @@ body <- dashboardBody(
     incomplete_outcome,
     selective_reporting,
     funder_influence,
-    analysis_unit,
+    # analysis_unit,
     animal_addition,
     tool,
     plots,

@@ -702,66 +702,67 @@ funder_influence <- tabItem(
   )
 )
 
-analysis_unit <- tabItem(
-  tabName = step_ids[[11]],
-  h1("10.2 Unit of analysis bias"),
-  lorem::ipsum(paragraph = 1),
-  br(),
-  br(),
-  br(),
-  fluidRow(
-    tabBox(
-      title = ("Were treatments given dissolved in either food or drinking water?"),
-      width = 6,
-      side = "right",
-      selected = "Description",
-      tabPanel(
-        "Examples",
-        lorem::ipsum(sentences = 2)
-      ),
-      tabPanel(
-        "Description",
-        p("")
-      )
-    ),
-    tabBox(
-      title = tab_title("Were animals housed individually?"),
-      width = 6,
-      side = "right",
-      selected = "Description",
-      tabPanel(
-        "Examples",
-        lorem::ipsum(sentences = 2)
-      ),
-      tabPanel(
-        "Description",
-        p("")
-      )
-    )
-  ),
-  fluidRow(
-    tabBox(
-      title = "Were cages (not individual animals) compared statistically as the unit of analysis?",
-      width = 6,
-      side = "right",
-      selected = "Description",
-      tabPanel(
-        "Examples",
-        lorem::ipsum(sentences = 2)
-      ),
-      tabPanel(
-        "Description",
-        p("Unit-of-analysis errors might be present in animal studies, which could lead to
-          inaccurate calculation of statistical measures. For example, if all mice in a cage
-          are given a treatment in their diet, the experimental unit is the cage and not the
-          individual animal.")
-      )
-    )
-  )
-)
+# analysis_unit <- tabItem(
+#   tabName = step_ids[[11]],
+#   h1("10.2 Unit of analysis bias"),
+#   lorem::ipsum(paragraph = 1),
+#   br(),
+#   br(),
+#   br(),
+#   fluidRow(
+#     tabBox(
+#       title = ("Were treatments given dissolved in either food or drinking water?"),
+#       width = 6,
+#       side = "right",
+#       selected = "Description",
+#       tabPanel(
+#         "Examples",
+#         lorem::ipsum(sentences = 2)
+#       ),
+#       tabPanel(
+#         "Description",
+#         p("")
+#       )
+#     ),
+#     tabBox(
+#       title = tab_title("Were animals housed individually?"),
+#       width = 6,
+#       side = "right",
+#       selected = "Description",
+#       tabPanel(
+#         "Examples",
+#         lorem::ipsum(sentences = 2)
+#       ),
+#       tabPanel(
+#         "Description",
+#         p("")
+#       )
+#     )
+#   ),
+#   fluidRow(
+#     tabBox(
+#       title = "Were cages (not individual animals) compared statistically as the unit of analysis?",
+#       width = 6,
+#       side = "right",
+#       selected = "Description",
+#       tabPanel(
+#         "Examples",
+#         lorem::ipsum(sentences = 2)
+#       ),
+#       tabPanel(
+#         "Description",
+#         p("Unit-of-analysis errors might be present in animal studies, which could lead to
+#           inaccurate calculation of statistical measures. For example, if all mice in a cage
+#           are given a treatment in their diet, the experimental unit is the cage and not the
+#           individual animal.")
+#       )
+#     )
+#   )
+# )
+
 animal_addition <- tabItem(
-  tabName = step_ids[[12]],
-  h1("10.3 Addition of animals"),
+  tabName = step_ids[[11]],
+  h1("10.2 Addition of animals"),
   lorem::ipsum(paragraph = 1),
   br(),
   br(),
