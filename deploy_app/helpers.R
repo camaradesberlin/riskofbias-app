@@ -19,6 +19,7 @@ library(tidyr)
 library(stringr)
 library(shinysurveys)
 library(robvis)
+library(ggplot2)
 
 # Helper functions --------------------------------------------------------
 
