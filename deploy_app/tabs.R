@@ -54,6 +54,12 @@ about <- tabItem(
 
 # Sequence allocation -----------------------------------------------------
 
+# "Were experimental procedures such that random sequence allocation was possible?"
+# "Did the authors report on any method of sequence allocation"
+# "Did the authors explicitly state that sequence allocation was randomized?"
+# "Did the authors describe a random component in the sequence generation process?"
+# "Was the method chosen appropriate to achieve random sequence allocation?"
+
 sequence_allocation <- tabItem(
   tabName = step_ids[[1]],
   h1("1. Sequence allocation"),
@@ -68,7 +74,7 @@ sequence_allocation <- tabItem(
   br(),
   fluidRow(
     tabBox(
-      title = ("Did the authors compare two cohorts of the same genetic model?"),
+      title = ("Were experimental procedures such that random sequence allocation was possible?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -83,7 +89,7 @@ sequence_allocation <- tabItem(
       )
     ),
     tabBox(
-      title = ("Do the authors report random allocation to group?"),
+      title = ("Did the authors report on any method of sequence allocation"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -100,6 +106,20 @@ sequence_allocation <- tabItem(
   ),
   fluidRow(
     tabBox(
+      title = ("Did the authors explicitly state that sequence allocation was randomized?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
+      )
+    ),
+    tabBox(
       title = ("Did the authors describe a random component in the sequence generation process?"),
       width = 6,
       side = "right",
@@ -112,8 +132,10 @@ sequence_allocation <- tabItem(
         "Description",
         p("It is generally not sufficient to mention randomization alone, without describing
           the method used to achieve random sequence allocation.")
+        )
       )
     ),
+  fluidRow(
     tabBox(
       title = ("Was the method chosen appropriate to achieve random sequence allocation?"),
       width = 6,
@@ -139,6 +161,12 @@ sequence_allocation <- tabItem(
 
 # Baseline characteristics ------------------------------------------------
 
+# "Were baseline characteristics (age, sex AND weight) described in the methods, results or supplements?",
+# "Were baseline characteristics reported per group?",
+# "Were the groups similar at baseline with respect to age, sex AND weight?",
+# "Were the overall reported characteristics within reasonable range?",
+# "Did the authors adjust the statistical analyses for confouders?"
+
 baseline_characteristics <- tabItem(
   tabName = step_ids[[2]],
   h1("2. Baseline characteristics"),
@@ -155,8 +183,7 @@ baseline_characteristics <- tabItem(
   br(),
   fluidRow(
     tabBox(
-      title = ("Do the authors report the baseline characteristics (age, sex AND weight) 
-               in the methods, results or supplements?"),
+      title = ("Were baseline characteristics (age, sex and weight) described in the methods, results or supplements?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -172,7 +199,23 @@ baseline_characteristics <- tabItem(
       )
     ),
     tabBox(
-      title = ("Are the groups similar at baseline with respect to age, sex and weight?"),
+      title = ("Were baseline characteristics reported per group?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
+      )
+    )
+  ),
+  fluidRow(
+    tabBox(
+      title = ("Were the groups similar at baseline with respect to age, sex and weight?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -184,6 +227,20 @@ baseline_characteristics <- tabItem(
         "Description",
         p("Observed differences in baseline characteristics between groups might point to
           high risk of bias if not properly accounted for in the analysis.")
+      )
+    ),
+    tabBox(
+      title = ("Were the overall reported characteristics within reasonable range?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
       )
     )
   ),
@@ -211,6 +268,12 @@ baseline_characteristics <- tabItem(
 
 # Allocation concealment --------------------------------------------------
 
+# "Were experimental procedures such that allocation concealment was possible?",
+# "Did the authors mention allocation concealment (blinding)?",
+# "Did the authors explicitly state that allocation was not blinded?",
+# "Was the allocation procedure described in the methods?",
+# "Was the allocation concealment appropriate?"
+
 allocation_concealment <- tabItem(
   tabName = step_ids[[3]],
   h1("3. Allocation concealment"),
@@ -224,7 +287,51 @@ allocation_concealment <- tabItem(
   br(),
   fluidRow(
     tabBox(
-      title = ("Was the allocation (randomization) procedure described in the methods?"),
+      title = ("Were experimental procedures such that allocation concealment was possible?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
+      )
+    ),
+    tabBox(
+      title = ("Did the authors mention allocation concealment (blinding)?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
+      )
+    )
+  ),
+  fluidRow(
+    tabBox(
+      title = ("Did the authors explicitly state that allocation was not blinded?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
+      )
+    ),
+    tabBox(
+      title = ("Was the allocation procedure described in the methods?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -236,22 +343,6 @@ allocation_concealment <- tabItem(
         "Description",
         p("Lack of information on how the procedure of sequence allocation occurred is indicative
           of unclear risk of bias in this domain.")
-      )
-    ),
-    tabBox(
-      title = ("Was sequence generation conducted by someone not involved in the experiment?"),
-      width = 6,
-      side = "right",
-      selected = "Description",
-      tabPanel(
-        "Examples",
-        lorem::ipsum(sentences = 2)
-      ),
-      tabPanel(
-        "Description",
-        p("In cases where sequence allocation is done by third-parties not involved in the
-          experimental study, concealment is deemed appropriate and indicates a low risk of 
-          performance bias.")
       )
     )
   ),
@@ -267,7 +358,9 @@ allocation_concealment <- tabItem(
       ),
       tabPanel(
         "Description",
-        p("In addition to third-party group allocation, another example of appropriate concealment
+        p("In cases where sequence allocation is done by third-parties not involved in the
+          experimental study, concealment is deemed appropriate and indicates a low risk of  bias. 
+          In addition to third-party group allocation, another example of appropriate concealment
           includes the use of properly safeguarded envelopes e.g. sequentially numbered
           opaque, sealed envelopes. On the other hand, inadequare approaches to concealment include: 
           open randomization schedule, envelopes without proper safeguard, alternation or rotation,
@@ -280,6 +373,12 @@ allocation_concealment <- tabItem(
 
 
 # Random housing ----------------------------------------------------------
+
+# "Was placement of animals and/or cages described?",
+# "Were animals single housed?",
+# "Were cages placed randomly within the cage facility?",
+# "Were animals from different groups housed together?",
+# "Were animals placed randomly within cages?"
 
 random_housing <- tabItem(
   tabName = step_ids[[4]],
@@ -294,7 +393,7 @@ random_housing <- tabItem(
   br(),
   fluidRow(
     tabBox(
-      title = tab_title("Was housing described in the methods?"),
+      title = ("Was placement of animals and/or cages described?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -309,6 +408,22 @@ random_housing <- tabItem(
           if these were handled appropriately.")
       )
     ),
+    tabBox(
+      title = ("Were animals single housed?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
+      )
+    )
+  ),
+  fluidRow(
     tabBox(
       title = ("Were cages placed randomly within the housing facility?"),
       width = 6,
@@ -329,6 +444,36 @@ random_housing <- tabItem(
         the allocation of the animals to the various groups, which would indicate 
         performance bias.")
       )
+    ),
+    tabBox(
+      title = ("Were animals from different groups housed together?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
+      )
+    )
+  ),
+  fluidRow(
+    tabBox(
+      title = ("Were animals placed randomly within cages?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
+      )
     )
   )
 )
@@ -336,6 +481,15 @@ random_housing <- tabItem(
 
 
 # Blinding ----------------------------------------------------------------
+
+# "Were experimental procedures such that blinding during the experiment was possible?",
+# "Was blinding mentioned in the study?",
+# "Was blinding of investigators and caregivers mentioned as a general statement regarding all procedures?",
+# "Was the method of blinding described?",
+# "Was the described method of blinding appropriate?",
+# "Was blinding of investigators and caregivers explicitly stated?",
+# "Was the method of blinding described?",
+# "Was the described method of blinding appropriate?"
 
 blinded_conduct <- tabItem(
   tabName = step_ids[[5]],
@@ -347,7 +501,21 @@ blinded_conduct <- tabItem(
   br(),
   fluidRow(
     tabBox(
-      title = tab_title("Is blinding mentioned?"),
+      title = ("Were experimental procedures such that blinding during the experiment was possible?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
+      )
+    ),
+    tabBox(
+      title = ("Was blinding mentioned in the study?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -358,12 +526,58 @@ blinded_conduct <- tabItem(
       tabPanel(
         "Description",
         p("Lack of explicit statements on blinding of investigators and/or caregivers could 
-        indicate an unclear risk of bias, given that insufficient information is available 
+        indicate an unclear risk of bias, given that insufficient information is available
           to evaluate the procedure.")
+      )
+    )
+  ),
+  fluidRow(
+    tabBox(
+      title = ("Was blinding of investigators and caregivers mentioned as a general statement regarding all procedures?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
       )
     ),
     tabBox(
-      title = ("Is the method of blinding described appropriate?"),
+      title = ("Was blinding of investigators and caregivers explicitly stated?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
+      )
+    )
+  ),
+  fluidRow(
+    tabBox(
+      title = ("Was the method of blinding described?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
+      )
+    ),
+    tabBox(
+      title = ("Was the described method of blinding appropriate?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -391,6 +605,15 @@ blinded_conduct <- tabItem(
 
 # Random outcome assessment -----------------------------------------------
 
+# "Were experimental procedures such that randomized outcome assessment during the experiment was possible?",
+# "Was randomization described in the paper?",
+# "Did the authors explicitly state that outcome assessment was not randomized?",
+# "Were randomization procedures mentioned as a general statement regarding all components of the experiment?",
+# "Was a random selection process for outcome assessment explicitly stated?",
+# "Was the method of randomization described?",
+# "Was the described method of randomization appropriate?"
+
+
 random_outcome <- tabItem(
   tabName = step_ids[[6]],
   h1("6. Random outcome assessment"),
@@ -406,7 +629,51 @@ random_outcome <- tabItem(
   br(),
   fluidRow(
     tabBox(
-      title = tab_title("Is randomization mentioned?"),
+      title = ("Were experimental procedures such that randomized outcome assessment during the experiment was possible?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
+      )
+    ),
+    tabBox(
+      title = ("Was randomization described in the paper?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
+      )
+    )
+  ),
+  fluidRow(
+    tabBox(
+      title = ("Did the authors explicitly state that outcome assessment was not randomized?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
+      )
+    ),
+    tabBox(
+      title = ("Were randomization procedures mentioned as a general statement regarding all components of the experiment?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -421,9 +688,41 @@ random_outcome <- tabItem(
         to include specific outcome assessments. Neverthtless, the methods used to determine random outcome assessment
         still need to be described in order to achieve a low risk of bias in this domain.")
       )
+    )
+  ),
+  fluidRow(
+    tabBox(
+      title = ("Was a random selection process for outcome assessment explicitly stated?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
+      )
     ),
     tabBox(
-      title = ("Is the method of randomization described appropriate?"),
+      title = ("Was the method of randomization described?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
+      )
+    )
+  ),
+  fluidRow(
+    tabBox(
+      title = ("Was the described method of randomization appropriate?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -446,6 +745,14 @@ random_outcome <- tabItem(
 
 # Blinded outcome assessment ----------------------------------------------
 
+# "Were experimental procedures such that blinded outcome assessment during the experiment was possible?",
+# "Was blinding described in the paper?",
+# "Did the authors explicitly state that outcome assessment was not blinded?",
+# "Were blinding procedures mentioned as a general statement regarding all components of the experiment?",
+# "Was blinding of outcome assessors explicitly stated?",
+# "Was the method of blinding described?",
+# "Was the described method of blinding appropriate?"
+
 blind_outcome <- tabItem(
   tabName = step_ids[[7]],
   h1("7. Blinded outcome assessment"),
@@ -457,7 +764,21 @@ blind_outcome <- tabItem(
   br(),
   fluidRow(
     tabBox(
-      title = tab_title("Is blinding mentioned?"),
+      title = ("Were experimental procedures such that blinded outcome assessment during the experiment was possible?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
+      )
+    ),
+    tabBox(
+      title = ("Was blinding described in the paper?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -471,9 +792,71 @@ blind_outcome <- tabItem(
           assess whether sufficient information is provided on adequately blinding outcome
           assessors.")
       )
+    )
+  ),
+  fluidRow(
+    tabBox(
+      title = tab_title("Did the authors explicitly state that outcome assessment was not blinded?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
+      )
     ),
     tabBox(
-      title = ("Is the method of blinding described appropriate?"),
+      title = ("Were blinding procedures mentioned as a general statement regarding all components of the experiment?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
+      )
+    )
+  ),
+  fluidRow(
+    tabBox(
+      title = ("Was blinding of outcome assessors explicitly stated?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
+      )
+    ),
+    tabBox(
+      title = ("Was the method of blinding described?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
+      )
+    )
+  ),
+  fluidRow(
+    tabBox(
+      title = tab_title("Was the described method of blinding appropriate?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -496,6 +879,15 @@ blind_outcome <- tabItem(
 
 # Attrition ---------------------------------------------------------------
 
+# "Was there a section specifically describing drop-outs or mortality?",
+# "Was the number of animals that started the experiment (assigned to groups) explicitly reported?",
+# "Was the number of animals that were analyzed (mentioned in the results text, tables or figure legends) explicitly reported?",
+# "Did the numbers of animals that started the experiment and were analyzed match?",
+# "Were there any drop-outs or mortality?",
+# "Were the number AND the reason for drop-out/death specified PER GROUP?",
+# "Were the number AND the reason for drop-out equally distributed across groups?",
+# "Were missing data imputed using appropriate statistical methods?"
+
 incomplete_outcome <- tabItem(
   tabName = step_ids[[8]],
   h1("8. Incomplete outcome data"),
@@ -506,7 +898,7 @@ incomplete_outcome <- tabItem(
   br(),
   fluidRow(
     tabBox(
-      title = space_after("Is there a section specifically describing drop-outs or mortality?"),
+      title = space_after("Was there a section specifically describing drop-outs or mortality?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -522,7 +914,7 @@ incomplete_outcome <- tabItem(
       )
     ),
     tabBox(
-      title = ("Do the numbers of animals that started the experiment and were analysed match?"),
+      title = ("Did the numbers of animals that started the experiment and were analyzed match?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -540,7 +932,7 @@ incomplete_outcome <- tabItem(
   ),
   fluidRow(
     tabBox(
-      title = "Are the number and the reason for drop-out/death specified and equally distributed per group?",
+      title = "Were the number AND the reason for drop-out equally distributed across groups?",
       width = 6,
       side = "right",
       selected = "Description",
@@ -577,6 +969,16 @@ incomplete_outcome <- tabItem(
 
 # Selective outcome reporting ---------------------------------------------
 
+# "Was the study protocol available and published prior to the study results?",
+# "Were results provided for all experiments described in the Methods section AND was the study free from explicitly unpublished results (e.g. data not shown)?",
+# "Were methods described for all results presented in the Results section?",
+# "Were outcomes defined in the initial protocol?",
+# "Did all the outcomes in the protocol and in the final report match?",
+# "Were deviations justified?",
+# "Were the pre-specified outcomes equivalent to the reported main findings?",
+# "Were all pre-specified outcomes conducted and reported as planned?",
+# "Were deviations justified?"
+
 selective_reporting <- tabItem(
   tabName = step_ids[[9]],
   h1("9. Selective outcome reporting"),
@@ -586,7 +988,7 @@ selective_reporting <- tabItem(
   br(),
   fluidRow(
     tabBox(
-      title = ("Was the study protocol available and published prior to the study results? "),
+      title = ("Was the study protocol available and published prior to the study results?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -602,7 +1004,8 @@ selective_reporting <- tabItem(
       )
     ),
     tabBox(
-      title = "Were results reported for all experiments outlined in the methods section and is the study is free of explicitly unpublished results?",
+      title = "Were results reported for all experiments described in the Methods section and was 
+      the study free of explicitly unpublished results (e.g., data not shown)?",
       width = 6,
       side = "right",
       selected = "Description",
@@ -622,7 +1025,23 @@ selective_reporting <- tabItem(
   ),
   fluidRow(
     tabBox(
-      title = "Do all the outcomes in the protocol and in the final report match or were deviations reported?",
+      title = "Were methods described for all results presented in the Results section?",
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
+      )
+    )
+  ),
+  fluidRow(
+    tabBox(
+      title = "Did all the outcomes in the protocol and in the final report match and were deviations justified?",
       width = 6,
       side = "right",
       selected = "Description",
@@ -638,7 +1057,7 @@ selective_reporting <- tabItem(
       )
     ),
     tabBox(
-      title = "Were all pre-specified outcomes conducted and reported as planned or were deviations explained?",
+      title = "Were all pre-specified outcomes conducted and reported as planned, and were deviations justified?",
       width = 6,
       side = "right",
       selected = "Description",
@@ -661,6 +1080,10 @@ selective_reporting <- tabItem(
 
 # Other bias --------------------------------------------------------------
 
+# "Was there a conflict of interest statement?",
+# "Did the authors report a conflict of interest?",
+# "Was it explicitly stated that measures were in place to avoid bias?"
+
 funder_influence <- tabItem(
   tabName = step_ids[[10]],
   h1("10.1 Inappropriate influence of funders"),
@@ -670,7 +1093,7 @@ funder_influence <- tabItem(
   br(),
   fluidRow(
     tabBox(
-      title = tab_title("Were sources of funding reported?"),
+      title = tab_title("Was there a conflict of interest statement?"),
       width = 6,
       side = "right",
       selected = "Description",
@@ -697,6 +1120,22 @@ funder_influence <- tabItem(
         "Description",
         p("Author-reported conflicts of interest could represent significant sources
           of bias in a study.")
+      )
+    )
+  ),
+  fluidRow(
+    tabBox(
+      title = tab_title("Was it explicitly stated that measures were in place to avoid bias?"),
+      width = 6,
+      side = "right",
+      selected = "Description",
+      tabPanel(
+        "Examples",
+        lorem::ipsum(sentences = 2)
+      ),
+      tabPanel(
+        "Description",
+        p("")
       )
     )
   )
@@ -759,6 +1198,8 @@ funder_influence <- tabItem(
 #     )
 #   )
 # )
+
+# "Was it explicitly stated that animals were added to any cohort to replace missing ones?"
 
 animal_addition <- tabItem(
   tabName = step_ids[[11]],
