@@ -80,12 +80,16 @@ sequence_allocation <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
-      ),
+        p("Examples of cases where random sequence allocation is not possible:"),
+        p("- Comparison of different genetic models"),
+        p("- Animals were obtained from different suppliers"),
+        p("- Use of a historical control group"),
+        p("- Experiments were performed across different institutes")
+        ),
       tabPanel(
         "Description",
-        p("The comparison of cohorts of different genetic models, irrespective of subsequent 
-        randomization procedures, indicates a high risk of bias.")
+        p("There are cases where randomizing the sequence allocation is not possible, due to the experimental
+        design of the study. This would indicate a high risk of bias for sequence allocation.")
       )
     ),
     tabBox(
@@ -94,13 +98,9 @@ sequence_allocation <- tabItem(
       side = "right",
       selected = "Description",
       tabPanel(
-        "Examples",
-        lorem::ipsum(sentences = 2)
-      ),
-      tabPanel(
         "Description",
-        p("If allocation to group is not reported to be random, it is unclear whether groups were
-          randomized, even if this was part of experimental procedures.")
+        p("If there is no description of how sequence allocation was performed, we cannot evaluate
+          whether appropriate randomization methods were used.")
       )
     )
   ),
@@ -112,11 +112,14 @@ sequence_allocation <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
-      ),
+        p("Examples of explicit statements on random allocation:"),
+        p("-", a(href="https://pubmed.ncbi.nlm.nih.gov/30077000/", "Aliena-Valero et al. (2018)"),
+          "'Male or female animals were randomly assigned to vehicle- or UA-treatment'")
+        ),
       tabPanel(
         "Description",
-        p("")
+        p("If allocation to group is not reported to be random, it is unclear whether groups were
+          randomized, even if this was what the researchers actually did.")
       )
     ),
     tabBox(
@@ -124,10 +127,6 @@ sequence_allocation <- tabItem(
       width = 6,
       side = "right",
       selected = "Description",
-      tabPanel(
-        "Examples",
-        lorem::ipsum(sentences = 2)
-      ),
       tabPanel(
         "Description",
         p("It is generally not sufficient to mention randomization alone, without describing
@@ -143,7 +142,9 @@ sequence_allocation <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("-", 
+          a(href="https://www.science.org/doi/10.1126/scitranslmed.aao6459", "Ali Alawieh et al. (2018)"),
+          "'For all studies, before their initial acclimation on behavior tasks, animals were randomly assigned to treatment groups using a random number generator.'")
       ),
       tabPanel(
         "Description",
@@ -177,7 +178,7 @@ baseline_characteristics <- tabItem(
   are dependent on the review question. Before starting their risk of bias assessment, 
   reviewers need to discuss which baseline characteristics need to be comparable between the groups.
   A description of baseline characteristics and/or confounders usually contains: (1) the sex, age and 
-  weight of the animals, and (2) baseline values of the outcomes which are of interest in the study/",
+  weight of the animals, and (2) baseline values of the outcomes which are of interest in the study.",
   br(),
   br(),
   br(),
@@ -188,30 +189,26 @@ baseline_characteristics <- tabItem(
       side = "right",
       selected = "Description",
       tabPanel(
-        "Examples",
-        lorem::ipsum(sentences = 2)
-      ),
-      tabPanel(
         "Description",
         p("If any of the predefined baseline characteristics are not described anywhere in 
         the study, the risk of bias remains unclear. This holds even if the authors state 
         that groups did not differ at baseline.")
       )
-    ),
-    tabBox(
-      title = ("Were baseline characteristics reported per group?"),
-      width = 6,
-      side = "right",
-      selected = "Description",
-      tabPanel(
-        "Examples",
-        lorem::ipsum(sentences = 2)
-      ),
-      tabPanel(
-        "Description",
-        p("")
-      )
     )
+    # ,tabBox(
+    #   title = ("Were baseline characteristics reported per group?"),
+    #   width = 6,
+    #   side = "right",
+    #   selected = "Description",
+    #   tabPanel(
+    #     "Examples",
+    #     lorem::ipsum(sentences = 2)
+    #   ),
+    #   tabPanel(
+    #     "Description",
+    #     p("")
+    #   )
+    # )
   ),
   fluidRow(
     tabBox(
@@ -221,7 +218,7 @@ baseline_characteristics <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("")
       ),
       tabPanel(
         "Description",
@@ -236,11 +233,14 @@ baseline_characteristics <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("-",
+          a(href="https://www.ahajournals.org/doi/10.1161/ATVBAHA.123.320339", "Hagemann et al. (2024)"),
+          "'Male C57Bl/6j mice (25–30 g body weight, 10–12 weeks; Envigo, Horst, the Netherlands)'")
       ),
       tabPanel(
         "Description",
-        p("")
+        p("If the relevant baseline characteristics were not reported per group, it is important to evaluate
+          whether the overall numbers reported are at least within reasonable range")
       )
     )
   ),
@@ -252,7 +252,7 @@ baseline_characteristics <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("")
       ),
       tabPanel(
         "Description",
@@ -293,27 +293,32 @@ allocation_concealment <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("Examples of cases where random sequence allocation is not possible:"),
+        p("- Comparison of different genetic models"),
+        p("- Animals were obtained from different suppliers"),
+        p("- Use of a historical control group"),
+        p("- Experiments were performed across different institutes")
       ),
       tabPanel(
         "Description",
-        p("")
-      )
-    ),
-    tabBox(
-      title = ("Did the authors mention allocation concealment (blinding)?"),
-      width = 6,
-      side = "right",
-      selected = "Description",
-      tabPanel(
-        "Examples",
-        lorem::ipsum(sentences = 2)
-      ),
-      tabPanel(
-        "Description",
-        p("")
+        p("There are cases where concealment (blinding) of sequence allocation is not possible, due to the experimental
+        design of the study. This would indicate a high risk of bias.")
       )
     )
+    # ,tabBox(
+    #   title = ("Did the authors mention allocation concealment (blinding)?"),
+    #   width = 6,
+    #   side = "right",
+    #   selected = "Description",
+    #   tabPanel(
+    #     "Examples",
+    #     lorem::ipsum(sentences = 2)
+    #   ),
+    #   tabPanel(
+    #     "Description",
+    #     p("")
+    #   )
+    # )
   ),
   fluidRow(
     tabBox(
@@ -323,11 +328,11 @@ allocation_concealment <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("")
       ),
       tabPanel(
         "Description",
-        p("")
+        p("Such a statement would indicate a high risk of bias.")
       )
     ),
     tabBox(
@@ -337,7 +342,7 @@ allocation_concealment <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("")
       ),
       tabPanel(
         "Description",
@@ -354,7 +359,11 @@ allocation_concealment <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("-",
+          a(href = "https://www.science.org/doi/10.1126/scitranslmed.adg8656", "Lyden et al. (2023)"),
+          "'The CC managed the acquisition, packaging, masking, and distribution of all the test interventions; 
+          the CC designed and implemented a feasible, scalable method of distributing multiple different treatment 
+          interventions in a masked manner'")
       ),
       tabPanel(
         "Description",
@@ -415,11 +424,11 @@ random_housing <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("")
       ),
       tabPanel(
         "Description",
-        p("")
+        p("If animals were single-housed, then it is the random placement of cages (and not animals), that would indicate a low risk of bias.")
       )
     )
   ),
@@ -435,13 +444,12 @@ random_housing <- tabItem(
       ),
       tabPanel(
         "Description",
-        p("For example, animals from different treatment groups should not be housed 
-        per group on different shelves or in different rooms as the animals on the 
+        p("When each animal is housed in a single cage, it is important that the placement of cages on shelves or rooms in the facility
+        is random. For instance, the animals on the 
         top shelf experience a higher room temperature than animals on the lowest shelf, 
         and the temperature of the room may influence the toxicity of pharmacological 
-        agents. When cages are not placed randomly (e.g., when animals are housed per group 
-        on different shelves), moreover, it is possible for the investigator to predict 
-        the allocation of the animals to the various groups, which would indicate 
+        agents. Moreover, when cages are not placed randomly, it might be possible for the investigator to predict 
+        the allocation of the animals to the various groups based on their housing conditions, which would indicate 
         performance bias.")
       )
     ),
@@ -452,11 +460,12 @@ random_housing <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("")
       ),
       tabPanel(
         "Description",
-        p("")
+        p("If animals from different groups were housed in the same cage, then it is the random placement of animals (and not cages)
+          in the housing facility that would indicate a low risk of performance bias.")
       )
     )
   ),
@@ -468,11 +477,11 @@ random_housing <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("")
       ),
       tabPanel(
         "Description",
-        p("")
+        p("If animals from different experimental groups are housed in one cage, there is generally a low risk of bias in this domain.")
       )
     )
   )
@@ -507,11 +516,16 @@ blinded_conduct <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("Examples of cases where random sequence allocation is not possible:"),
+        p("- Comparison of different genetic models"),
+        p("- Animals were obtained from different suppliers"),
+        p("- Use of a historical control group"),
+        p("- Experiments were performed across different institutes")
       ),
       tabPanel(
         "Description",
-        p("")
+        p("There are cases where blinding of experimental procedures is not possible, due to the
+        design of the study. This would indicate a high risk of bias.")
       )
     ),
     tabBox(
@@ -521,7 +535,7 @@ blinded_conduct <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("")
       ),
       tabPanel(
         "Description",
@@ -531,36 +545,36 @@ blinded_conduct <- tabItem(
       )
     )
   ),
-  fluidRow(
-    tabBox(
-      title = ("Was blinding of investigators and caregivers mentioned as a general statement regarding all procedures?"),
-      width = 6,
-      side = "right",
-      selected = "Description",
-      tabPanel(
-        "Examples",
-        lorem::ipsum(sentences = 2)
-      ),
-      tabPanel(
-        "Description",
-        p("")
-      )
-    ),
-    tabBox(
-      title = ("Was blinding of investigators and caregivers explicitly stated?"),
-      width = 6,
-      side = "right",
-      selected = "Description",
-      tabPanel(
-        "Examples",
-        lorem::ipsum(sentences = 2)
-      ),
-      tabPanel(
-        "Description",
-        p("")
-      )
-    )
-  ),
+  # fluidRow(
+  #   tabBox(
+  #     title = ("Was blinding of investigators and caregivers mentioned as a general statement regarding all procedures?"),
+  #     width = 6,
+  #     side = "right",
+  #     selected = "Description",
+  #     tabPanel(
+  #       "Examples",
+  #       lorem::ipsum(sentences = 2)
+  #     ),
+  #     tabPanel(
+  #       "Description",
+  #       p("")
+  #     )
+  #   ),
+  #   tabBox(
+  #     title = ("Was blinding of investigators and caregivers explicitly stated?"),
+  #     width = 6,
+  #     side = "right",
+  #     selected = "Description",
+  #     tabPanel(
+  #       "Examples",
+  #       lorem::ipsum(sentences = 2)
+  #     ),
+  #     tabPanel(
+  #       "Description",
+  #       p("")
+  #     )
+  #   )
+  # ),
   fluidRow(
     tabBox(
       title = ("Was the method of blinding described?"),
@@ -569,11 +583,11 @@ blinded_conduct <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("")
       ),
       tabPanel(
         "Description",
-        p("")
+        p("A sufficient methodological description is needed to assess the risk of bias in this domain.")
       )
     ),
     tabBox(
@@ -583,7 +597,7 @@ blinded_conduct <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("")
       ),
       tabPanel(
         "Description",
@@ -635,27 +649,32 @@ random_outcome <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("Examples of cases where random sequence allocation is not possible:"),
+        p("- Comparison of different genetic models"),
+        p("- Animals were obtained from different suppliers"),
+        p("- Use of a historical control group"),
+        p("- Experiments were performed across different institutes")
       ),
       tabPanel(
         "Description",
-        p("")
-      )
-    ),
-    tabBox(
-      title = ("Was randomization described in the paper?"),
-      width = 6,
-      side = "right",
-      selected = "Description",
-      tabPanel(
-        "Examples",
-        lorem::ipsum(sentences = 2)
-      ),
-      tabPanel(
-        "Description",
-        p("")
+        p("There are cases where random outcome assessment is not possible, due to the
+        experimental design of the study. This would indicate a high risk of bias.")
       )
     )
+    # ,tabBox(
+    #   title = ("Was randomization described in the paper?"),
+    #   width = 6,
+    #   side = "right",
+    #   selected = "Description",
+    #   tabPanel(
+    #     "Examples",
+    #     lorem::ipsum(sentences = 2)
+    #   ),
+    #   tabPanel(
+    #     "Description",
+    #     p("")
+    #   )
+    # )
   ),
   fluidRow(
     tabBox(
@@ -665,11 +684,11 @@ random_outcome <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("")
       ),
       tabPanel(
         "Description",
-        p("")
+        p("Such statements would be a clear indication of a high risk of bias in this domain.")
       )
     ),
     tabBox(
@@ -679,7 +698,7 @@ random_outcome <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("")
       ),
       tabPanel(
         "Description",
@@ -698,11 +717,12 @@ random_outcome <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("")
       ),
       tabPanel(
         "Description",
-        p("")
+        p("The authors need to explicitly described whether a random process was followed when assessing a specific outcome
+          in order to be able to evaluate the risk of bias.")
       )
     ),
     tabBox(
@@ -712,11 +732,11 @@ random_outcome <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("")
       ),
       tabPanel(
         "Description",
-        p("")
+        p("If the exact method is not described, this would lead to an unclear risk of bias.")
       )
     )
   ),
@@ -770,11 +790,16 @@ blind_outcome <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("Examples of cases where random sequence allocation is not possible:"),
+        p("- Comparison of different genetic models"),
+        p("- Animals were obtained from different suppliers"),
+        p("- Use of a historical control group"),
+        p("- Experiments were performed across different institutes")
       ),
       tabPanel(
         "Description",
-        p("")
+        p("There are cases where blinded outcome assessment is not possible, due to the
+        experimental design of the study. This would indicate a high risk of bias.")
       )
     ),
     tabBox(
@@ -1099,12 +1124,15 @@ funder_influence <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("This information can appear in the manuscript under various sections:"),
+        p("- Conflict of interest"),
+        p("- Competing interests"),
+        p("- Disclosure")
       ),
       tabPanel(
         "Description",
-        p("Inappropriate influence of funders is a possibility, if no information
-          on the matter is available, which means the risk of bias status remains unclear.")
+        p("Inappropriate influence of funders is a possibility. If no information
+          on the matter is available, the risk of bias status remains unclear.")
       )
     ),
     tabBox(
@@ -1114,7 +1142,18 @@ funder_influence <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("-",
+          a(href = "https://pubmed.ncbi.nlm.nih.gov/34942319/", "Zhang et al. (2022)"),
+          "'The authors declare that they have no known competing financial
+          interests or personal relationships that could have appeared to influence
+          the work reported in this paper.'"),
+        p("-",
+          a(href = "https://onlinelibrary.wiley.com/doi/10.1111/acel.13371", "Wu et al. (2021)"),
+          "'Y.W.S., Y.Q.W., G.X.Z., and Z.J.Z. are share owners of Guangzhou Magpie Pharmaceuticals, LTD., Corp., 
+          who holds the patent covering the compound MN-08. The other authors declare that no competing interests exist.'"),
+        p("-",
+          a(href = "https://pubmed.ncbi.nlm.nih.gov/24598771/", "Zhang et al. (2014)"),
+          "'There are no conflicts of interest.'")
       ),
       tabPanel(
         "Description",
@@ -1131,11 +1170,14 @@ funder_influence <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("")
       ),
       tabPanel(
         "Description",
-        p("")
+        p("It is possible that a conflict of interest is present, e.g., a pharmaceutical company 
+        funds the a study investigating the effectiveness of one of their drugs on a specific condition.
+        If it is explicitly stated that the funder was not involved in study design or any experimental procedures,
+        this would not be considered an inappropriate influence, and thus, would indicate a low risk of bias.")
       )
     )
   )
@@ -1216,7 +1258,7 @@ animal_addition <- tabItem(
       selected = "Description",
       tabPanel(
         "Examples",
-        lorem::ipsum(sentences = 2)
+        p("")
       ),
       tabPanel(
         "Description",
